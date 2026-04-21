@@ -1,11 +1,28 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request) {
   try {
-    const body = await request.json();
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const contactFromEmail = process.env.CONTACT_FROM_EMAIL;
+    const contactToEmail = process.env.CONTACT_TO_EMAIL;
 
+    if (!resendApiKey) {
+      return Response.json(
+        { error: 'Missing RESEND_API_KEY environment variable.' },
+        { status: 500 }
+      );
+    }
+
+    if (!contactFromEmail || !contactToEmail) {
+      return Response.json(
+        { error: 'Missing CONTACT_FROM_EMAIL or CONTACT_TO_EMAIL environment variable.' },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    const body = await request.json();
     const { name, email, company, phone, message } = body;
 
     if (!name || !email || !message) {
@@ -16,8 +33,8 @@ export async function POST(request) {
     }
 
     await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL,
-      to: process.env.CONTACT_TO_EMAIL,
+      from: contactFromEmail,
+      to: contactToEmail,
       subject: `Nuevo mensaje de contacto - ${name}`,
       replyTo: email,
       html: `
@@ -33,7 +50,7 @@ export async function POST(request) {
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error('Contact form error:', error);
 
     return Response.json(
       { error: 'Internal server error.' },
