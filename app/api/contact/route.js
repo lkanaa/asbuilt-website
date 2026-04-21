@@ -1,10 +1,14 @@
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request) {
   try {
     const resendApiKey = process.env.RESEND_API_KEY;
     const contactFromEmail = process.env.CONTACT_FROM_EMAIL;
     const contactToEmail = process.env.CONTACT_TO_EMAIL;
+
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!resendApiKey) {
       return Response.json(
@@ -20,7 +24,12 @@ export async function POST(request) {
       );
     }
 
-    const resend = new Resend(resendApiKey);
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      return Response.json(
+        { error: 'Missing Supabase environment variables.' },
+        { status: 500 }
+      );
+    }
 
     const body = await request.json();
     const { name, email, company, phone, message } = body;
@@ -32,7 +41,36 @@ export async function POST(request) {
       );
     }
 
-    await resend.emails.send({
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+
+    const { data: savedMessage, error: dbError } = await supabase
+      .from('contact_messages')
+      .insert({
+        name,
+        email,
+        company: company || null,
+        phone: phone || null,
+        message,
+        status: 'new',
+      })
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error('Supabase insert error:', dbError);
+
+      return Response.json(
+        {
+          error: 'Failed to save message to database.',
+          details: dbError.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    const { data: emailData, error: emailError } = await resend.emails.send({
       from: contactFromEmail,
       to: contactToEmail,
       subject: `Nuevo mensaje de contacto - ${name}`,
@@ -48,12 +86,35 @@ export async function POST(request) {
       `,
     });
 
-    return Response.json({ success: true });
+    if (emailError) {
+      console.error('Resend error:', emailError);
+
+      return Response.json(
+        {
+          success: false,
+          saved: true,
+          messageId: savedMessage.id,
+          error: 'Message was saved, but email failed to send.',
+          details: emailError,
+        },
+        { status: 500 }
+      );
+    }
+
+    return Response.json({
+      success: true,
+      saved: true,
+      messageId: savedMessage.id,
+      email: emailData,
+    });
   } catch (error) {
     console.error('Contact form error:', error);
 
     return Response.json(
-      { error: 'Internal server error.' },
+      {
+        error: 'Internal server error.',
+        details: error.message,
+      },
       { status: 500 }
     );
   }
