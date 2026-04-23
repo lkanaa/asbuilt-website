@@ -103,7 +103,7 @@ export default function Home() {
     {
       icon: Scan,
       title: 'Levantamiento por Nube de Puntos',
-      description: 'Captura de alta precisión con equipo FARO Focus S, obteniendo millones de puntos de datos con exactitud milimétrica para documentar condiciones existentes.',
+      description: 'Captura de alta precisión con equipo profesional, obteniendo millones de puntos de datos con exactitud milimétrica para documentar condiciones existentes.',
       features: ['Escaneo Láser 3D', 'Procesamiento de Nube de Puntos', 'Registro y Alineación', 'Exportación a Múltiples Formatos']
     },
     {
@@ -130,14 +130,14 @@ export default function Home() {
   const projects = [
     {
       id: 1,
-      title: 'Ortofotometría',
+      title: 'Ortofotografía',
       description: 'Captura y procesamiento de datos para crear mapas ortofotográficos de alta precisión, utilizando tecnología avanzada de escaneo y fotogrametría para documentación territorial y análisis de superficie.',
       services: [],
       technologies: [],
       images: [
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a552e7eda_image.png', alt: 'Ortofotometría - Vista aérea' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/577877c01_image.png', alt: 'Ortofotometría - Procesamiento' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a2f947c70_image.png', alt: 'Ortofotometría - Análisis' }
+        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a552e7eda_image.png', alt: 'Ortofotografía - Vista aérea' },
+        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/577877c01_image.png', alt: 'Ortofotografía - Procesamiento' },
+        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a2f947c70_image.png', alt: 'Ortofotografía - Análisis' }
       ],
       features: [
         'Captura de datos de alta precisión',
@@ -147,7 +147,7 @@ export default function Home() {
     },
     {
       id: 2,
-      title: 'Modelado de Edificios con Diferentes Ingenierías',
+      title: 'Modelado de Proyectos',
       description: 'Desarrollo de modelos BIM integrados que consolidan arquitectura, estructura, instalaciones mecánicas, eléctricas, hidráulicas y especiales en un entorno digital unificado, permitiendo la coordinación eficiente entre disciplinas, detección temprana de interferencias y una gestión precisa del proyecto a lo largo de todo su ciclo de vida.',
       services: ['BIM'],
       technologies: ['BIM 360', 'Navisworks', 'Coordinación Multidisciplinaria', 'Clash Detection'],
@@ -615,7 +615,7 @@ export default function Home() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-500 mb-1">Teléfono</div>
-                      <a href="tel:+34912345678" className="text-white hover:text-orange-400 transition-colors">
+                      <a href="tel: +52 (662) 181-8698" className="text-white hover:text-orange-400 transition-colors">
                         +34 912 345 678
                       </a>
                     </div>
@@ -631,8 +631,8 @@ export default function Home() {
                     <div>
                       <div className="text-sm text-gray-500 mb-1">Oficina</div>
                       <address className="text-white not-italic">
-                        Calle Innovación 123<br />
-                        28001 Madrid, España
+                        Valle Escondido, Del Retiro 27<br />
+                        83207 Hermosillo, Sonora
                       </address>
                     </div>
                   </motion.div>
