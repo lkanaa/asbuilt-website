@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
@@ -548,7 +547,7 @@ export default function Home() {
                       id="phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+34 600 000 000"
+                      placeholder="+52 662 000 0000"
                       className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 rounded-xl focus:border-orange-500"
                     />
                   </div>
@@ -600,7 +599,7 @@ export default function Home() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-500 mb-1">Correo</div>
-                      <a href="mailto:info@as-built.com" className="text-white hover:text-orange-400 transition-colors">
+                      <a href="mailto:info@asbuiltco.com" className="text-white hover:text-orange-400 transition-colors">
                         info@as-built.com
                       </a>
                     </div>
@@ -616,7 +615,7 @@ export default function Home() {
                     <div>
                       <div className="text-sm text-gray-500 mb-1">Teléfono</div>
                       <a href="tel: +52 (662) 181-8698" className="text-white hover:text-orange-400 transition-colors">
-                        +34 912 345 678
+                        +52 (662) 181-8698
                       </a>
                     </div>
                   </motion.div>
