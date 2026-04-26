@@ -600,7 +600,7 @@ export default function Home() {
                     <div>
                       <div className="text-sm text-gray-500 mb-1">Correo</div>
                       <a href="mailto:info@asbuiltco.com" className="text-white hover:text-orange-400 transition-colors">
-                        info@as-built.com
+                        info@asbuiltco.com
                       </a>
                     </div>
                   </motion.div>
