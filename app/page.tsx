@@ -687,8 +687,8 @@ export default function AsBuiltHomepageRedesign() {
                   />
                 </div>
                 <select
-                  name="projectType"
-                  value={formData.projectType}
+                  name="project_type"
+                  value={formData.project_type}
                   onChange={handleInputChange}
                   required
                   className="rounded-xl border border-slate-200 px-4 py-3 text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
