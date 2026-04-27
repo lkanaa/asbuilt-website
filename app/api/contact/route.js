@@ -32,7 +32,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { name, email, company, phone, projectType, message } = body;
+    const { name, email, company, phone, project_type, message } = body;
 
     if (!name || !email || !message) {
       return Response.json(
