@@ -257,7 +257,7 @@ export default function AsBuiltHomepageRedesign() {
         email: "",
         company: "",
         phone: "",
-        projectType: "",
+        project_type: "",
         message: "",
       });
     } catch (error) {
