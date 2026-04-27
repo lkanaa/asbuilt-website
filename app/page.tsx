@@ -1,55 +1,187 @@
 'use client';
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { 
-  Box, 
-  Scan, 
-  FileText, 
-  ArrowRight, 
-  CheckCircle2, 
-  Mail, 
-  Phone, 
+import React, { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Box,
+  Building2,
+  CheckCircle2,
+  ClipboardList,
+  Cuboid,
+  FileText,
+  FileTextIcon,
+  Layers3,
+  Mail,
   MapPin,
-  ChevronDown
-} from 'lucide-react';
-import { toast } from 'sonner';
-import ProjectCard from '@/components/ProjectCard';
+  Clock3,
+  Menu,
+  Phone,
+  Target,
+  UsersRound,
+} from "lucide-react";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+const base44Images = {
+  hero:
+    "https://media.base44.com/images/public/698a3c580c288f79d8b0a371/bcf47d566_ChatGPTImageMar26202601_54_57AM.png",
+  // Place the transparent Consulate PNG in your Next.js public folder as:
+  // public/consulate-transparent.png
+  bimBuildingTransparent: "/images/consulate-transparent.png",
+  ortofoto:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a552e7eda_image.png",
+  ortofotoProcessing:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/577877c01_image.png",
+  ortofotoAnalysis:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a2f947c70_image.png",
+  bimBuilding:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/9c80ff914_image.png",
+  clashGeneral:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/326c952fb_image.png",
+  clashAnalysis:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/418a36d5e_image.png",
+  clashResolution:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/8de53340b_image.png",
 };
 
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+const serviceGroups = [
+  {
+    category: "Diseño",
+    description:
+      "Servicios enfocados en crear, desarrollar y definir el inmueble desde su concepto inicial hasta una propuesta arquitectónica clara.",
+    services: [
+      {
+        icon: Building2,
+        title: "Diseño de Inmueble",
+        bullets: [
+          "Conceptualización del espacio",
+          "Distribución funcional",
+          "Propuesta integral del inmueble",
+        ],
+        image: base44Images.hero,
+      },
+      {
+        icon: Layers3,
+        title: "Diseño Arquitectónico",
+        bullets: [
+          "Anteproyecto arquitectónico",
+          "Desarrollo de planos",
+          "Criterios estéticos y funcionales",
+        ],
+        image: base44Images.bimBuilding,
+      },
+    ],
+  },
+  {
+    category: "Modelado BIM",
+    description:
+      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
+    services: [
+      {
+        icon: Box,
+        title: "Modelado BIM y 3D",
+        bullets: ["Arquitectura, estructura y MEP", "Cuantificación", "Visualización"],
+        image: base44Images.bimBuilding,
+      },
+      {
+        icon: Cuboid,
+        title: "Modelado de Disciplinas",
+        bullets: ["Arquitectura", "Estructura", "Instalaciones MEP"],
+        image: base44Images.clashGeneral,
+      },
+    ],
+  },
+  {
+    category: "Coordinación y Documentación",
+    description:
+      "Procesos técnicos para validar condiciones existentes, detectar interferencias y generar entregables útiles para obra y operación.",
+    services: [
+      {
+        icon: Building2,
+        title: "Levantamiento por nube de puntos",
+        bullets: ["Escaneo láser 3D", "Procesamiento", "Registro y alineación"],
+        image: base44Images.ortofoto,
+      },
+      {
+        icon: UsersRound,
+        title: "Coordinación de Ingeniería",
+        bullets: [
+          "Integración de disciplinas",
+          "Revisión de interferencias",
+          "Optimización de soluciones técnicas",
+        ],
+        image: base44Images.clashAnalysis,
+      },
+      {
+        icon: FileText,
+        title: "Documentación As-Built",
+        bullets: ["Planos", "Conversión CAD", "Informes de calidad"],
+        image: base44Images.clashResolution,
+      },
+    ],
+  },
+];
 
-export default function Home() {
+const process = [
+  {
+    icon: ClipboardList,
+    title: "Revisamos tu proyecto",
+    text: "Analizamos alcance, objetivos y requerimientos técnicos.",
+  },
+  {
+    icon: Layers3,
+    title: "Capturamos o recibimos la información",
+    text: "Trabajamos con escaneo 3D, planos, fotografías o documentación existente.",
+  },
+  {
+    icon: Cuboid,
+    title: "Modelamos y coordinamos",
+    text: "Generamos modelos BIM y coordinamos disciplinas para validación.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Entregamos archivos listos para uso",
+    text: "Entregables precisos para obra, operación o documentación final.",
+  },
+];
+
+const tools = ["Revit", "Navisworks", "BIM 360", "AutoCAD MEP", "Recap", "CAD/BIM"];
+
+function SectionTitle({ eyebrow, title, description }) {
+  return (
+    <div className="mx-auto mb-12 max-w-3xl text-center">
+      {eyebrow ? (
+        <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-500">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h2 className="text-3xl font-black tracking-tight text-slate-950 md:text-4xl">
+        {title}
+      </h2>
+      {description ? (
+        <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg">
+          {description}
+        </p>
+      ) : null}
+      <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-cyan-500" />
+    </div>
+  );
+}
+
+export default function AsBuiltHomepageRedesign() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    message: ''
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    projectType: "",
+    message: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState("success");
 
-  React.useEffect(() => {
-    const lastSubmit = localStorage.getItem('asbuilt_form_submitted');
-
-    if (!lastSubmit) return;
-
+  useEffect(() => {
+    const lastSubmit = localStorage.getItem("asbuilt_form_submitted");
     const today = new Date().toDateString();
 
     if (lastSubmit === today) {
@@ -57,662 +189,545 @@ export default function Home() {
     }
   }, []);
 
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const today = new Date().toDateString();
-  const lastSubmit = localStorage.getItem('asbuilt_form_submitted');
+    const today = new Date().toDateString();
+    const lastSubmit = localStorage.getItem("asbuilt_form_submitted");
 
-  if (lastSubmit === today) {
-    toast.error('Ya enviaste un mensaje hoy. Por favor espera hasta mañana.');
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Error sending message');
+    if (lastSubmit === today) {
+      setAlreadySubmitted(true);
+      setStatusType("error");
+      setStatusMessage("Ya enviaste un mensaje hoy. Por favor espera hasta mañana.");
+      return;
     }
 
-    localStorage.setItem('asbuilt_form_submitted', today);
-    setAlreadySubmitted(true);
-    toast.success('¡Gracias! Nos pondremos en contacto pronto.');
-    setFormData({ name: '', email: '', company: '', phone: '', message: '' });
-  } catch (error) {
-    toast.error('Hubo un error al enviar el mensaje. Intenta de nuevo.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    setIsSubmitting(true);
+    setStatusMessage("");
 
-  const services = [
-    {
-      icon: Scan,
-      title: 'Levantamiento por Nube de Puntos',
-      description: 'Captura de alta precisión con equipo profesional, obteniendo millones de puntos de datos con exactitud milimétrica para documentar condiciones existentes.',
-      features: ['Escaneo Láser 3D', 'Procesamiento de Nube de Puntos', 'Registro y Alineación', 'Exportación a Múltiples Formatos']
-    },
-    {
-      icon: Box,
-      title: 'Modelado 3D',
-      description: 'Creación de modelos tridimensionales precisos a partir de datos de escaneo, transformando la realidad en información digital utilizable.',
-      features: ['Modelado BIM', 'Detección de Conflictos', 'Cuantificación', 'Visualización 3D']
-    },
-    {
-      icon: FileText,
-      title: 'Documentación',
-      description: 'Documentación as-built detallada y planos de construcción que brindan claridad y precisión durante todo el ciclo de vida de tu proyecto.',
-      features: ['Planos As-Built', 'Conversión CAD', 'Documentación de Registro', 'Informes de Calidad']
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Error sending message");
+      }
+
+      localStorage.setItem("asbuilt_form_submitted", today);
+      setAlreadySubmitted(true);
+      setStatusType("success");
+      setStatusMessage("¡Gracias! Nos pondremos en contacto pronto.");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        projectType: "",
+        message: "",
+      });
+    } catch (error) {
+      setStatusType("error");
+      setStatusMessage("Hubo un error al enviar el mensaje. Intenta de nuevo.");
+    } finally {
+      setIsSubmitting(false);
     }
-  ];
-
-  const additionalServices = [
-    { title: 'Diseño de Inmueble', description: 'Diseño interior y distribución de espacios optimizada' },
-    { title: 'Diseño Arquitectónico', description: 'Proyectos arquitectónicos completos y detallados' },
-    { title: 'Coordinación de Ingeniería', description: 'Gestión integral de disciplinas de ingeniería' },
-    { title: 'Modelado de Disciplinas', description: 'Modelado especializado por cada disciplina técnica' }
-  ];
-
-  const projects = [
-    {
-      id: 1,
-      title: 'Ortofotografía',
-      description: 'Captura y procesamiento de datos para crear mapas ortofotográficos de alta precisión, utilizando tecnología avanzada de escaneo y fotogrametría para documentación territorial y análisis de superficie.',
-      services: [],
-      technologies: [],
-      images: [
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a552e7eda_image.png', alt: 'Ortofotografía - Vista aérea' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/577877c01_image.png', alt: 'Ortofotografía - Procesamiento' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a2f947c70_image.png', alt: 'Ortofotografía - Análisis' }
-      ],
-      features: [
-        'Captura de datos de alta precisión',
-        'Procesamiento de imágenes ortofotográficas',
-        'Documentación territorial detallada'
-      ]
-    },
-    {
-      id: 2,
-      title: 'Modelado de Proyectos',
-      description: 'Desarrollo de modelos BIM integrados que consolidan arquitectura, estructura, instalaciones mecánicas, eléctricas, hidráulicas y especiales en un entorno digital unificado, permitiendo la coordinación eficiente entre disciplinas, detección temprana de interferencias y una gestión precisa del proyecto a lo largo de todo su ciclo de vida.',
-      services: ['BIM'],
-      technologies: ['BIM 360', 'Navisworks', 'Coordinación Multidisciplinaria', 'Clash Detection'],
-      images: [
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/9c80ff914_image.png', alt: 'Consulado Americano Hermosillo' }
-      ],
-      features: [
-        'Coordinación BIM de múltiples disciplinas',
-        'Detección y resolución de conflictos',
-        'Documentación ejecutiva del proyecto',
-        'Gestión de equipos técnicos'
-      ]
-    },
-    {
-      id: 3,
-      title: 'Detección de Colisión de Ingenierías',
-      description: 'Análisis exhaustivo de interferencias y colisiones entre los modelos de distintas disciplinas de ingeniería —estructural, mecánica, eléctrica, plomería y especiales— mediante herramientas de clash detection en entorno BIM. Este proceso identifica y resuelve conflictos virtuales antes de la construcción, evitando costosos retrabajos en obra y garantizando una ejecución ordenada y sin imprevistos.',
-      services: ['BIM'],
-      technologies: ['AutoCAD MEP', 'Revit MEP', 'Coordinación de Instalaciones'],
-      images: [
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/326c952fb_image.png', alt: 'Detección de Colisión - Vista general' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/418a36d5e_image.png', alt: 'Detección de Colisión - Análisis de interferencias' },
-        { url: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/8de53340b_image.png', alt: 'Detección de Colisión - Resolución de conflictos' }
-      ],
-      features: [
-        'Identificación de interferencias entre disciplinas',
-        'Resolución virtual de conflictos antes de obra',
-        'Coordinación de instalaciones MEP y estructura',
-        'Reducción de retrabajos y costos en construcción'
-      ]
-    },
-  ];
-
-
+  };
 
   return (
-    <div className="min-h-screen text-white overflow-x-hidden relative" style={{ background: 'linear-gradient(to right, #000000 0%, #0a0a0a 8%, #050505 20%, #050505 80%, #0a0a0a 92%, #000000 100%)' }}>
-      {/* Global topo pattern overlay */}
-      <div className="fixed inset-0 pointer-events-none z-0" style={{
-        backgroundImage: `url('https://media.base44.com/images/public/698a3c580c288f79d8b0a371/c737e86a2_45ed6c1879d0c6dd328c725b5bd63226.png')`,
-        backgroundSize: '350px 350px',
-        backgroundRepeat: 'repeat',
-        opacity: 0.08
-      }} />
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-xl border-b border-white/5 relative">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-400 rounded-lg flex items-center justify-center">
-              <Box className="w-5 h-5 text-white" />
+    <main className="min-h-screen scroll-smooth bg-white text-slate-950">
+      <style>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
+        .clickable-motion {
+          transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease, border-color 220ms ease;
+        }
+
+        .clickable-motion:hover {
+          transform: translateY(-3px) scale(1.015);
+        }
+
+        .clickable-motion:active {
+          transform: translateY(0) scale(0.97);
+        }
+
+        @keyframes revealUp {
+          from {
+            opacity: 0;
+            transform: translateY(34px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @supports (animation-timeline: view()) {
+          .scroll-reveal {
+            opacity: 0;
+            animation: revealUp 0.75s ease-out forwards;
+            animation-timeline: view();
+            animation-range: entry 8% cover 28%;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto;
+          }
+
+          .clickable-motion,
+          .clickable-motion:hover,
+          .clickable-motion:active,
+          .scroll-reveal {
+            transform: none;
+            animation: none;
+            opacity: 1;
+          }
+        }
+      `}</style>
+
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+          <a href="#" className="flex items-center gap-3 text-white">
+            <div className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-400/40 bg-cyan-400/10">
+              <Box className="h-6 w-6 text-cyan-400" />
             </div>
-            <span className="text-xl font-semibold tracking-tight">As-Built</span>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="hidden md:flex items-center gap-8"
-          >
-            <a 
-              href="#services" 
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                e.preventDefault();
-                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-sm text-gray-400 hover:text-orange-400 transition-all duration-300 relative group"
-            >
+            <span className="text-2xl font-black tracking-tight">As-Built</span>
+          </a>
+
+          <div className="hidden items-center gap-8 text-sm font-semibold text-white/80 md:flex">
+            <a href="#servicios" className="transition hover:text-cyan-300">
               Servicios
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full" />
             </a>
-            <a 
-              href="#portfolio" 
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-sm text-gray-400 hover:text-orange-400 transition-all duration-300 relative group"
-            >
-              Portafolio
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full" />
+            <a href="#proceso" className="transition hover:text-cyan-300">
+              Proceso
             </a>
-            <a 
-              href="#about" 
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-sm text-gray-400 hover:text-orange-400 transition-all duration-300 relative group"
-            >
-              Nosotros
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-sm text-gray-400 hover:text-orange-400 transition-all duration-300 relative group"
-            >
+            <a href="#contacto" className="transition hover:text-cyan-300">
               Contacto
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full" />
             </a>
-          </motion.div>
+          </div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Button 
-                            onClick={scrollToContact}
-                            className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6"
-                          >
-                            Comenzar
-                          </Button>
-          </motion.div>
+          <a
+            href="#contacto"
+            className="clickable-motion hidden rounded-xl bg-cyan-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 md:inline-flex"
+          >
+            Cotizar
+          </a>
+
+          <button
+            className="rounded-xl border border-white/10 p-2 text-white md:hidden"
+            aria-label="Abrir menú"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </nav>
+      </header>
+
+      <section className="relative min-h-[760px] overflow-hidden bg-[#031a3d] lg:min-h-[820px]">
+        {/* Deep architectural blue background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_40%,rgba(14,165,233,0.34),transparent_30%),radial-gradient(circle_at_22%_18%,rgba(6,182,212,0.14),transparent_25%),linear-gradient(135deg,#020817_0%,#031a3d_45%,#062f63_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(2,8,23,0.96)_0%,rgba(2,8,23,0.86)_34%,rgba(2,8,23,0.38)_58%,rgba(2,8,23,0.18)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,8,23,0.38)_82%)]" />
+
+        {/* Right-side transparent BIM model */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] flex w-full items-center justify-end overflow-hidden lg:w-[67%]">
+          <div className="relative mr-[-9vw] mt-10 w-[1080px] max-w-[86vw] lg:mr-[-4vw] xl:mr-[-2vw]">
+            <div className="absolute bottom-[6%] left-[10%] h-32 w-[76%] rounded-full bg-cyan-400/24 blur-3xl" />
+            <div className="absolute bottom-[2%] left-[14%] h-20 w-[70%] rounded-full bg-black/45 blur-2xl" />
+            <img
+              src={base44Images.bimBuildingTransparent}
+              alt="Modelo BIM del Consulado Americano Hermosillo"
+              className="relative z-10 h-auto w-full object-contain drop-shadow-[0_36px_40px_rgba(0,0,0,0.42)]"
+            />
+          </div>
         </div>
-      </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center pt-20">
-        {/* Hero background image */}
-        <div className="absolute inset-0 z-[1]" style={{
-          backgroundImage: `url('https://media.base44.com/images/public/698a3c580c288f79d8b0a371/bcf47d566_ChatGPTImageMar26202601_54_57AM.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }} />
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 z-[2]" style={{ background: 'linear-gradient(to bottom, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.92) 100%)' }} />
+        {/* Mobile image fade control */}
+        <div className="absolute inset-0 z-[2] bg-gradient-to-b from-slate-950/10 via-slate-950/10 to-slate-950/35 lg:hidden" />
 
-        <div className="relative z-[3] max-w-4xl mx-auto px-6 text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-          >
-            <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
-              Servicios de Modelado 3D
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
-              BIM • Escaneo • Documentación
-            </span>
-          </motion.h1>
+        {/* Content */}
+        <div className="relative z-10 mx-auto flex min-h-[760px] max-w-7xl items-center px-6 py-24 lg:min-h-[820px] lg:px-8">
+          <div className="max-w-[660px] pt-10">
+            <div className="mb-16 hidden items-center gap-4 text-white lg:flex">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/30 bg-white/5 shadow-lg shadow-cyan-950/40 backdrop-blur">
+                <Box className="h-7 w-7 text-cyan-300" />
+              </div>
+              <div>
+                <p className="text-xl font-black uppercase tracking-[0.22em]">As-Built</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+                  BIM & Digital Solutions
+                </p>
+              </div>
+            </div>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8"
-          >
-            Transformamos tus espacios en modelos digitales precisos. 
-            Solicita tu cotización hoy.
-          </motion.p>
+            <h1 className="text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-[5.65rem]">
+              Modelos <span className="bg-gradient-to-r from-cyan-300 to-sky-500 bg-clip-text text-transparent">As-Built</span> precisos para arquitectura, ingeniería y construcción
+            </h1>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Button 
-              onClick={scrollToContact}
-              size="lg"
-              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-full px-10 py-7 text-xl font-semibold group shadow-lg shadow-orange-500/30"
+            <div className="mt-8 h-1 w-20 rounded-full bg-cyan-400" />
+
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 lg:text-xl">
+              Transformamos levantamientos, nubes de puntos y documentación existente en modelos BIM y entregables técnicos listos para coordinación, obra y toma de decisiones.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <a
+                href="#contacto"
+                className="clickable-motion inline-flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-600 px-7 py-4 text-center font-black text-white shadow-2xl shadow-cyan-500/25 hover:from-cyan-300 hover:to-sky-500"
+              >
+                <FileTextIcon className="h-5 w-5" />
+                Solicitar cotización
+              </a>
+
+              <a
+                href="#servicios"
+                className="clickable-motion inline-flex items-center justify-center gap-8 rounded-xl border border-white/25 bg-slate-950/20 px-7 py-4 text-center font-black text-white backdrop-blur hover:border-cyan-300 hover:bg-white/5"
+              >
+                Ver servicios
+                <ArrowRight className="h-5 w-5" />
+              </a>
+            </div>
+
+            <div className="mt-14 grid gap-5 text-white sm:grid-cols-3">
+              {[
+                [Target, "Precisión técnica"],
+                [Cuboid, "Flujo BIM profesional"],
+                [MapPin, "Cobertura en México"],
+              ].map(([Icon, label], index) => (
+                <div
+                  key={label}
+                  className={`flex items-center gap-3 ${index > 0 ? "sm:border-l sm:border-white/20 sm:pl-6" : ""}`}
+                >
+                  <Icon className="h-7 w-7 shrink-0 text-cyan-300" />
+                  <span className="text-sm font-semibold text-slate-100 lg:text-base">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-5 px-6 py-7 md:grid-cols-4 lg:px-8">
+          {[
+            [CheckCircle2, "Precisión técnica"],
+            [Cuboid, "Flujo BIM profesional"],
+            [Clock3, "Respuesta en 24h"],
+            [MapPin, "Cobertura en México"],
+          ].map(([Icon, label]) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 border-slate-200 md:border-r md:last:border-r-0"
             >
-              Solicitar Cotización
-              <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-10 flex items-center justify-center gap-6 text-sm text-gray-400"
-          >
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-green-400" />
-              Respuesta en 24h
-            </span>
-          </motion.div>
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-cyan-50 text-cyan-600">
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="font-bold text-slate-800">{label}</p>
+            </div>
+          ))}
         </div>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[3]"
-        >
-          <ChevronDown className="w-6 h-6 text-gray-500 animate-bounce" />
-        </motion.div>
       </section>
 
-      
+      <section id="servicios" className="scroll-reveal bg-slate-50 px-6 py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle
+            eyebrow="Servicios"
+            title="Del diseño conceptual a la documentación técnica final"
+            description="Desarrollamos soluciones de diseño, modelado BIM, coordinación de ingeniería y documentación As-Built para convertir cada etapa del proyecto en información clara, precisa y útil para tomar decisiones."
+          />
 
-      {/* Services Section */}
-      <section id="services" className="py-32">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20"
-          >
-            <span className="text-orange-400 text-sm font-medium tracking-wider uppercase mb-4 block">
-              Lo Que Ofrecemos
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Servicios Principales
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Desde el escaneo inicial hasta la documentación final, proporcionamos servicios 
-              completos que garantizan precisión y eficiencia en cada etapa.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group relative bg-gradient-to-b from-white/[0.08] to-transparent border border-white/10 rounded-3xl p-8 hover:border-orange-500/50 transition-all duration-500"
+          <div className="space-y-12">
+            {serviceGroups.map((group) => (
+              <section
+                key={group.category}
+                className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8"
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="relative z-10">
-                  <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <service.icon className="w-7 h-7 text-white" />
-                  </div>
-                  
-                  <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-                  <p className="text-gray-400 mb-6 leading-relaxed">{service.description}</p>
-                  
-                  <ul className="space-y-3">
-                    {service.features.map((feature, fIndex) => (
-                      <li key={fIndex} className="flex items-center gap-3 text-sm text-gray-300">
-                        <CheckCircle2 className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="mb-7 max-w-3xl">
+                  <p className="text-sm font-bold uppercase tracking-[0.22em] text-cyan-500">
+                    {group.category}
+                  </p>
+                  <p className="mt-3 text-base leading-7 text-slate-600">
+                    {group.description}
+                  </p>
                 </div>
-              </motion.div>
+
+                <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+                  {group.services.map((service) => {
+                    const Icon = service.icon;
+                    return (
+                      <article
+                        key={service.title}
+                        className="scroll-reveal group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                      >
+                        <div className="relative h-44 overflow-hidden">
+                          <img
+                            src={service.image}
+                            alt=""
+                            className="h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/45 to-transparent" />
+                          <div className="absolute bottom-4 left-5 grid h-14 w-14 place-items-center rounded-2xl bg-slate-950 text-cyan-300 shadow-lg">
+                            <Icon className="h-7 w-7" />
+                          </div>
+                        </div>
+                        <div className="p-6">
+                          <h3 className="text-xl font-black text-slate-950">
+                            {service.title}
+                          </h3>
+                          <ul className="mt-5 space-y-3 text-sm font-medium text-slate-600">
+                            {service.bullets.map((bullet) => (
+                              <li key={bullet} className="flex items-center gap-3">
+                                <span className="h-2 w-2 rounded-full bg-cyan-500" />
+                                {bullet}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-32 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Experiencia comprobada en proyectos de gran escala, desde diseño conceptual 
-              hasta coordinación técnica y supervisión de múltiples disciplinas.
-            </p>
-          </motion.div>
+      <section id="proceso" className="scroll-reveal bg-slate-50 px-6 py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle eyebrow="Proceso" title="Nuestro proceso" />
 
-          <div className="space-y-24">
-            {projects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {process.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <article
+                  key={step.title}
+                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+                >
+                  <div className="mb-5 flex items-center justify-between">
+                    <div className="grid h-14 w-14 place-items-center rounded-2xl bg-cyan-50 text-cyan-600">
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <span className="text-4xl font-black text-slate-100">0{index + 1}</span>
+                  </div>
+                  <h3 className="text-lg font-black text-slate-950">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{step.text}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="scroll-reveal bg-white px-6 py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle eyebrow="Software" title="Herramientas que usamos" />
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+            {tools.map((tool) => (
+              <div
+                key={tool}
+                className="rounded-2xl border border-cyan-200 bg-white px-5 py-4 text-center font-black text-slate-800 shadow-sm"
+              >
+                {tool}
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-
-
-      {/* Additional Services Section */}
-      <section className="py-24 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-orange-400 text-sm font-medium tracking-wider uppercase mb-4 block">
-              Servicios Adicionales
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold">
-              También Ofrecemos
-            </h2>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {additionalServices.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 hover:border-orange-500/30 transition-colors"
-              >
-                <h3 className="text-lg font-semibold mb-2 text-white">{service.title}</h3>
-                <p className="text-gray-500 text-sm">{service.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-32">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <span className="text-orange-400 text-sm font-medium tracking-wider uppercase mb-4 block">
-              Ponte en Contacto
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Comencemos Tu Proyecto
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              ¿Listo para transformar tu espacio en un modelo digital preciso? 
-              Completa el formulario a continuación y nuestro equipo te contactará en 24 horas.
+      <section id="contacto" className="scroll-reveal bg-white px-6 py-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="p-6 md:p-10">
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-500">
+              Contacto
             </p>
-          </motion.div>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">
+              Comencemos tu proyecto
+            </h2>
+            <p className="mt-4 max-w-2xl text-slate-600">
+              Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos.
+            </p>
 
-          <div className="grid lg:grid-cols-5 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-3"
-            >
-              {alreadySubmitted ? (
-                <div className="bg-white/[0.03] border border-orange-500/30 rounded-3xl p-8 md:p-10 text-center">
-                  <CheckCircle2 className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">¡Mensaje enviado!</h3>
-                  <p className="text-gray-400">Ya enviaste un mensaje hoy. Te contactaremos pronto. Puedes volver a escribirnos mañana.</p>
-                </div>
-              ) : (
-              <motion.form 
-                onSubmit={handleSubmit} 
-                className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 md:p-10 hover:border-orange-500/20 transition-all duration-500"
-                whileHover={{ y: -4 }}
-              >
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-gray-300">Nombre Completo *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-  setFormData({ ...formData, name: e.target.value })
-}
-                      required
-                      placeholder="Juan García"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 rounded-xl focus:border-orange-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-300">Correo Electrónico *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      required
-                      placeholder="juan@empresa.com"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 rounded-xl focus:border-orange-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="company" className="text-gray-300">Nombre de la Empresa</Label>
-                    <Input
-                      id="company"
-                      value={formData.company}
-                      onChange={(e) => setFormData({...formData, company: e.target.value})}
-                      placeholder="Empresa S.A."
-                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 rounded-xl focus:border-orange-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-gray-300">Número de Teléfono</Label>
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+52 662 000 0000"
-                      className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 rounded-xl focus:border-orange-500"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2 mb-8">
-                  <Label htmlFor="message" className="text-gray-300">Detalles del Proyecto *</Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+            {alreadySubmitted ? (
+              <div className="mt-8 rounded-3xl border border-cyan-300/40 bg-cyan-50 p-8 text-center">
+                <CheckCircle2 className="mx-auto h-12 w-12 text-cyan-600" />
+                <h3 className="mt-4 text-xl font-black text-slate-950">¡Mensaje enviado!</h3>
+                <p className="mt-2 text-slate-600">
+                  Ya enviaste un mensaje hoy. Te contactaremos pronto. Puedes volver a escribirnos mañana.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-8 grid gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     required
-                    placeholder="Cuéntanos sobre tu proyecto, plazos y cualquier requisito específico..."
-                    rows={5}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 rounded-xl focus:border-orange-500 resize-none"
+                    className="rounded-xl border border-slate-200 px-4 py-3 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                    placeholder="Nombre completo"
+                  />
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="rounded-xl border border-slate-200 px-4 py-3 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                    placeholder="Correo electrónico"
+                  />
+                  <input
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    className="rounded-xl border border-slate-200 px-4 py-3 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                    placeholder="Empresa"
+                  />
+                  <input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="rounded-xl border border-slate-200 px-4 py-3 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                    placeholder="Teléfono"
                   />
                 </div>
-                <Button 
+                <select
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleInputChange}
+                  required
+                  className="rounded-xl border border-slate-200 px-4 py-3 text-slate-500 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                >
+                  <option value="">Tipo de proyecto</option>
+                  <option value="Diseño de Inmueble">Diseño de Inmueble</option>
+                  <option value="Diseño Arquitectónico">Diseño Arquitectónico</option>
+                  <option value="Modelado BIM y 3D">Modelado BIM y 3D</option>
+                  <option value="Modelado de Disciplinas">Modelado de Disciplinas</option>
+                  <option value="Levantamiento por nube de puntos">Levantamiento por nube de puntos</option>
+                  <option value="Coordinación de Ingeniería">Coordinación de Ingeniería</option>
+                  <option value="Documentación As-Built">Documentación As-Built</option>
+                </select>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  className="min-h-36 rounded-xl border border-slate-200 px-4 py-3 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                  placeholder="Detalles del proyecto"
+                />
+
+                {statusMessage ? (
+                  <p
+                    className={`rounded-xl px-4 py-3 text-sm font-semibold ${
+                      statusType === "success"
+                        ? "bg-cyan-50 text-cyan-700"
+                        : "bg-red-50 text-red-700"
+                    }`}
+                  >
+                    {statusMessage}
+                  </p>
+                ) : null}
+
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white h-14 rounded-xl text-lg font-medium"
+                  className="clickable-motion w-full rounded-xl bg-slate-950 px-7 py-4 font-bold text-white shadow-lg hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-60 md:w-fit"
                 >
-                  {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </motion.form>
-              )}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-2 space-y-8"
-            >
-              <motion.div 
-                className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 hover:border-orange-500/20 transition-all duration-500"
-                whileHover={{ y: -4 }}
-              >
-                <h3 className="text-xl font-semibold mb-6">Información de Contacto</h3>
-                <div className="space-y-6">
-                  <motion.div 
-                    className="flex items-start gap-4"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <Mail className="w-5 h-5 text-orange-400" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500 mb-1">Correo</div>
-                      <a href="mailto:info@asbuiltco.com" className="text-white hover:text-orange-400 transition-colors">
-                        info@asbuiltco.com
-                      </a>
-                    </div>
-                  </motion.div>
-                  <motion.div 
-                    className="flex items-start gap-4"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <Phone className="w-5 h-5 text-orange-400" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500 mb-1">Teléfono</div>
-                      <a href="tel: +52 (662) 181-8698" className="text-white hover:text-orange-400 transition-colors">
-                        +52 (662) 181-8698
-                      </a>
-                    </div>
-                  </motion.div>
-                  <motion.div 
-                    className="flex items-start gap-4"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <MapPin className="w-5 h-5 text-orange-400" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500 mb-1">Oficina</div>
-                      <address className="text-white not-italic">
-                        Valle Escondido, Del Retiro 27<br />
-                        83207 Hermosillo, Sonora
-                      </address>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 rounded-3xl p-8 hover:border-orange-500/50 transition-all duration-500"
-                whileHover={{ y: -4 }}
-              >
-                <h3 className="text-xl font-semibold mb-3">Respuesta Rápida</h3>
-                <p className="text-gray-400 text-sm">
-                  Normalmente respondemos a todas las consultas en 24 horas. Para proyectos urgentes, 
-                  llámanos directamente para asistencia inmediata.
-                </p>
-              </motion.div>
-            </motion.div>
+                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+                </button>
+              </form>
+            )}
           </div>
+
+          <aside className="relative overflow-hidden bg-slate-950 p-8 text-white md:p-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(6,182,212,0.25),transparent_35%)]" />
+            <div className="relative flex h-full flex-col justify-center gap-8">
+              <div className="flex gap-4">
+                <Mail className="h-7 w-7 text-cyan-300" />
+                <div>
+                  <p className="font-black">info@asbuiltco.com</p>
+                  <p className="mt-1 text-sm text-slate-300">Correo de contacto</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <Phone className="h-7 w-7 text-cyan-300" />
+                <div>
+                  <p className="font-black">+52 (662) 181-8698</p>
+                  <p className="mt-1 text-sm text-slate-300">Teléfono / WhatsApp</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <MapPin className="h-7 w-7 text-cyan-300" />
+                <div>
+                  <p className="font-black">Hermosillo, Sonora</p>
+                  <p className="mt-1 text-sm text-slate-300">Cobertura para proyectos en México</p>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+      <footer className="bg-slate-950 px-6 py-12 text-white lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
+          <div>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-400 rounded-lg flex items-center justify-center">
-                <Box className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-lg font-semibold">As-Built</span>
+              <Box className="h-8 w-8 text-cyan-400" />
+              <span className="text-2xl font-black">As-Built</span>
             </div>
-            <div className="flex items-center gap-6">
-              <a 
-                href="#services" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-sm text-gray-500 hover:text-orange-400 transition-colors"
-              >
-                Servicios
-              </a>
-              <a 
-                href="#portfolio" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-sm text-gray-500 hover:text-orange-400 transition-colors"
-              >
-                Portafolio
-              </a>
-              <a 
-                href="#about" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-sm text-gray-500 hover:text-orange-400 transition-colors"
-              >
-                Nosotros
-              </a>
-              <a 
-                href="#contact" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-sm text-gray-500 hover:text-orange-400 transition-colors"
-              >
-                Contacto
-              </a>
-            </div>
-          </div>
-          <div className="text-center">
-            <p className="text-gray-500 text-sm">
-              © 2026 As-Built. Todos los derechos reservados.
+            <p className="mt-4 max-w-xs text-sm leading-6 text-slate-400">
+              Modelos As-Built precisos para arquitectura, ingeniería y construcción.
             </p>
           </div>
+
+          {[
+            [
+              "Servicios",
+              [
+                "Diseño de Inmueble",
+                "Diseño Arquitectónico",
+                "Modelado BIM y 3D",
+                "Modelado de Disciplinas",
+                "Levantamiento 3D",
+                "Coordinación de Ingeniería",
+                "Documentación As-Built",
+              ],
+            ],
+            ["Nosotros", ["Quiénes somos", "Nuestro enfoque", "Clientes"]],
+            ["Contacto", ["info@asbuiltco.com", "+52 (662) 181-8698", "Hermosillo, Sonora"]],
+          ].map(([title, links]) => (
+            <div key={title}>
+              <h3 className="font-black">{title}</h3>
+              <ul className="mt-4 space-y-2 text-sm text-slate-400">
+                {links.map((link) => (
+                  <li key={link}>{link}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-center text-sm text-slate-500">
+          © 2026 As-Built. Todos los derechos reservados.
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
