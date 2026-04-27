@@ -1,41 +1,45 @@
-'use client';
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import {
-  ArrowRight,
   Box,
   Building2,
   CheckCircle2,
+  Clock3,
   ClipboardList,
   Cuboid,
   FileText,
-  FileTextIcon,
   Layers3,
   Mail,
   MapPin,
-  Clock3,
   Menu,
   Phone,
-  Target,
   UsersRound,
 } from "lucide-react";
 
-const images = {
-  hero: "/images/hero.png",
+const base44Images = {
+  hero:
+    "https://media.base44.com/images/public/698a3c580c288f79d8b0a371/bcf47d566_ChatGPTImageMar26202601_54_57AM.png",
+  // Place the transparent Consulate PNG in your Next.js public folder as:
+  // public/consulate-transparent.png
   bimBuildingTransparent: "/images/consulate-transparent.png",
-  ortofoto: "/images/ortofoto.png",
-  ortofotoProcessing: "/images/ortofoto-processing.png",
-  ortofotoAnalysis: "/images/ortofoto-analysis.png",
-  bimBuilding: "/images/bim-building.png",
-  clashGeneral: "/images/clash-general.png",
-  clashAnalysis: "/images/clash-analysis.png",
-  clashResolution: "/images/clash-resolution.png",
-  arqdesign: "/images/arq-design.png"
+  ortofoto:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a552e7eda_image.png",
+  ortofotoProcessing:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/577877c01_image.png",
+  ortofotoAnalysis:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/a2f947c70_image.png",
+  bimBuilding:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/9c80ff914_image.png",
+  clashGeneral:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/326c952fb_image.png",
+  clashAnalysis:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/418a36d5e_image.png",
+  clashResolution:
+    "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698a3c580c288f79d8b0a371/8de53340b_image.png",
 };
 
 const serviceGroups = [
   {
-    category: "Diseño", 
+    category: "Diseño",
     description:
       "Servicios enfocados en crear, desarrollar y definir el inmueble desde su concepto inicial hasta una propuesta arquitectónica clara.",
     services: [
@@ -47,7 +51,7 @@ const serviceGroups = [
           "Distribución funcional",
           "Propuesta integral del inmueble",
         ],
-        image: images.hero,
+        image: base44Images.hero,
       },
       {
         icon: Layers3,
@@ -57,7 +61,7 @@ const serviceGroups = [
           "Desarrollo de planos",
           "Criterios estéticos y funcionales",
         ],
-        image: images.arqdesign,
+        image: base44Images.bimBuilding,
       },
     ],
   },
@@ -70,13 +74,13 @@ const serviceGroups = [
         icon: Box,
         title: "Modelado BIM y 3D",
         bullets: ["Arquitectura, estructura y MEP", "Cuantificación", "Visualización"],
-        image: images.bimBuilding,
+        image: base44Images.bimBuilding,
       },
       {
         icon: Cuboid,
         title: "Modelado de Disciplinas",
         bullets: ["Arquitectura", "Estructura", "Instalaciones MEP"],
-        image: images.clashGeneral,
+        image: base44Images.clashGeneral,
       },
     ],
   },
@@ -89,7 +93,7 @@ const serviceGroups = [
         icon: Building2,
         title: "Levantamiento por nube de puntos",
         bullets: ["Escaneo láser 3D", "Procesamiento", "Registro y alineación"],
-        image: images.ortofoto,
+        image: base44Images.ortofoto,
       },
       {
         icon: UsersRound,
@@ -99,13 +103,13 @@ const serviceGroups = [
           "Revisión de interferencias",
           "Optimización de soluciones técnicas",
         ],
-        image: images.clashAnalysis,
+        image: base44Images.clashAnalysis,
       },
       {
         icon: FileText,
         title: "Documentación As-Built",
         bullets: ["Planos", "Conversión CAD", "Informes de calidad"],
-        image: images.clashResolution,
+        image: base44Images.clashResolution,
       },
     ],
   },
@@ -136,37 +140,9 @@ const process = [
 
 const tools = ["Revit", "Navisworks", "BIM 360", "AutoCAD MEP", "Recap", "CAD/BIM"];
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const viewportOnce = { once: false, amount: 0.18 };
-
-type SectionTitleProps = {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-};
-
-function SectionTitle({ eyebrow, title, description }:SectionTitleProps) {
+function SectionTitle({ eyebrow, title, description }) {
   return (
-    <motion.div
-      initial="initial"
-      whileInView="animate"
-      viewport={viewportOnce}
-      variants={fadeInUp}
-      className="mx-auto mb-12 max-w-3xl text-center"
-    >
+    <div className="mx-auto mb-12 max-w-3xl text-center">
       {eyebrow ? (
         <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-500">
           {eyebrow}
@@ -181,7 +157,7 @@ function SectionTitle({ eyebrow, title, description }:SectionTitleProps) {
         </p>
       ) : null}
       <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-cyan-500" />
-    </motion.div>
+    </div>
   );
 }
 
@@ -209,7 +185,7 @@ export default function AsBuiltHomepageRedesign() {
     }
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((current) => ({
       ...current,
@@ -217,7 +193,7 @@ export default function AsBuiltHomepageRedesign() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const today = new Date().toDateString();
@@ -325,25 +301,14 @@ export default function AsBuiltHomepageRedesign() {
 
       <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <motion.a
-            href="#"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 text-white"
-          >
+          <a href="#" className="flex items-center gap-3 text-white">
             <div className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-400/40 bg-cyan-400/10">
               <Box className="h-6 w-6 text-cyan-400" />
             </div>
             <span className="text-2xl font-black tracking-tight">As-Built</span>
-          </motion.a>
+          </a>
 
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden items-center gap-8 text-sm font-semibold text-white/80 md:flex"
-          >
+          <div className="hidden items-center gap-8 text-sm font-semibold text-white/80 md:flex">
             <a href="#servicios" className="transition hover:text-cyan-300">
               Servicios
             </a>
@@ -353,17 +318,14 @@ export default function AsBuiltHomepageRedesign() {
             <a href="#contacto" className="transition hover:text-cyan-300">
               Contacto
             </a>
-          </motion.div>
+          </div>
 
-          <motion.a
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <a
             href="#contacto"
             className="clickable-motion hidden rounded-xl bg-cyan-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 md:inline-flex"
           >
             Cotizar
-          </motion.a>
+          </a>
 
           <button
             className="rounded-xl border border-white/10 p-2 text-white md:hidden"
@@ -374,118 +336,69 @@ export default function AsBuiltHomepageRedesign() {
         </nav>
       </header>
 
-      <section className="relative min-h-[760px] overflow-hidden bg-[#031a3d] lg:min-h-[820px]">
-        {/* Deep architectural blue background */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_40%,rgba(14,165,233,0.34),transparent_30%),radial-gradient(circle_at_22%_18%,rgba(6,182,212,0.14),transparent_25%),linear-gradient(135deg,#020817_0%,#031a3d_45%,#062f63_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(2,8,23,0.96)_0%,rgba(2,8,23,0.86)_34%,rgba(2,8,23,0.38)_58%,rgba(2,8,23,0.18)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,8,23,0.38)_82%)]" />
+      <section className="relative overflow-hidden bg-[#031a3d]">
+        {/* Full blue background */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#021228_0%,#062b57_45%,#031a3d_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_35%,rgba(0,174,255,0.16),transparent_28%),radial-gradient(circle_at_20%_20%,rgba(0,119,255,0.12),transparent_24%)]" />
 
-        {/* Right-side transparent BIM model */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] flex w-full items-center justify-end overflow-hidden lg:w-[67%]">
-          <motion.div
-            initial={{ opacity: 0, x: 80, scale: 0.96 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mr-[-9vw] mt-10 w-[1080px] max-w-[86vw] lg:mr-[-4vw] xl:mr-[-2vw]"
-          >
-            <div className="absolute bottom-[6%] left-[10%] h-32 w-[76%] rounded-full bg-cyan-400/24 blur-3xl" />
-            <div className="absolute bottom-[2%] left-[14%] h-20 w-[70%] rounded-full bg-black/45 blur-2xl" />
+        {/* Right-side image area */}
+        <div className="absolute inset-y-0 right-0 w-full lg:w-[58%]">
+          <div className="flex h-full w-full items-center justify-end pr-0 lg:pr-6">
             <img
-              src={images.bimBuildingTransparent}
+              src={base44Images.bimBuildingTransparent}
               alt="Modelo BIM del Consulado Americano Hermosillo"
-              className="relative z-10 h-auto w-full object-contain drop-shadow-[0_36px_40px_rgba(0,0,0,0.42)]"
+              className="h-auto max-h-[92%] w-auto max-w-full object-contain object-right"
             />
-          </motion.div>
+          </div>
         </div>
 
-        {/* Mobile image fade control */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-b from-slate-950/10 via-slate-950/10 to-slate-950/35 lg:hidden" />
+        {/* Left dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/88 via-slate-950/62 to-transparent" />
+
+        {/* Optional subtle blend between text area and image area */}
+        <div className="absolute inset-y-0 right-[48%] hidden w-40 bg-gradient-to-r from-transparent to-slate-950/12 lg:block" />
+
+        {/* Bottom highlight line */}
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[760px] max-w-7xl items-center px-6 py-24 lg:min-h-[820px] lg:px-8">
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-            className="max-w-[660px] pt-10"
-          >
-            <motion.div variants={fadeInUp} className="mb-16 hidden items-center gap-4 text-white lg:flex">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-300/30 bg-white/5 shadow-lg shadow-cyan-950/40 backdrop-blur">
-                <Box className="h-7 w-7 text-cyan-300" />
-              </div>
-              <div>
-                <p className="text-xl font-black uppercase tracking-[0.22em]">As-Built</p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
-                  BIM & Digital Solutions
-                </p>
-              </div>
-            </motion.div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-28 lg:px-8 lg:py-36">
+          <div className="max-w-2xl">
+            <h1 className="max-w-3xl text-5xl font-black tracking-tight text-white md:text-6xl">
+              Modelos <span className="text-cyan-400">As-Built</span> precisos para arquitectura, ingeniería y construcción
+            </h1>
 
-            <motion.h1 variants={fadeInUp} className="text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-[5.65rem]">
-              Modelos <span className="bg-gradient-to-r from-cyan-300 to-sky-500 bg-clip-text text-transparent">As-Built</span> precisos para arquitectura, ingeniería y construcción
-            </motion.h1>
-
-            <motion.div variants={fadeInUp} className="mt-8 h-1 w-20 rounded-full bg-cyan-400" />
-
-            <motion.p variants={fadeInUp} className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 lg:text-xl">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
               Transformamos levantamientos, nubes de puntos y documentación existente en modelos BIM y entregables técnicos listos para coordinación, obra y toma de decisiones.
-            </motion.p>
+            </p>
 
-            <motion.div variants={fadeInUp} className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
               <a
                 href="#contacto"
-                className="clickable-motion inline-flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-600 px-7 py-4 text-center font-black text-white shadow-2xl shadow-cyan-500/25 hover:from-cyan-300 hover:to-sky-500"
+                className="clickable-motion rounded-xl bg-cyan-500 px-7 py-4 text-center font-bold text-white shadow-xl shadow-cyan-500/20 hover:bg-cyan-400"
               >
-                <FileTextIcon className="h-5 w-5" />
                 Solicitar cotización
               </a>
 
               <a
                 href="#servicios"
-                className="clickable-motion inline-flex items-center justify-center gap-8 rounded-xl border border-white/25 bg-slate-950/20 px-7 py-4 text-center font-black text-white backdrop-blur hover:border-cyan-300 hover:bg-white/5"
+                className="clickable-motion rounded-xl border border-white/20 px-7 py-4 text-center font-bold text-white hover:border-cyan-300 hover:bg-white/5"
               >
                 Ver servicios
-                <ArrowRight className="h-5 w-5" />
               </a>
-            </motion.div>
-
-            <motion.div variants={fadeInUp} className="mt-14 grid gap-5 text-white sm:grid-cols-3">
-              {[
-                { icon: Target, label: "Precisión técnica" },
-                { icon: Cuboid, label: "Flujo BIM profesional" },
-                { icon: MapPin, label: "Cobertura en México" },
-              ].map(({ icon: Icon, label }, index) => (
-                <div
-                  key={label}
-                  className={`flex items-center gap-3 ${
-                    index > 0 ? "sm:border-l sm:border-white/20 sm:pl-6" : ""
-                  }`}
-                >
-                  <Icon className="h-7 w-7 shrink-0 text-cyan-300" />
-                  <span className="text-sm font-semibold text-slate-100 lg:text-base">
-                    {label}
-                  </span>
-                </div>
-                ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={viewportOnce}
-        variants={fadeInUp}
-        className="border-b border-slate-200 bg-white"
-      >
+      <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto grid max-w-7xl gap-5 px-6 py-7 md:grid-cols-4 lg:px-8">
           {[
-            { icon: CheckCircle2, label: "Precisión técnica" },
-            { icon: Cuboid, label: "Flujo BIM profesional" },
-            { icon: Clock3, label: "Respuesta en 24h" },
-            { icon: MapPin, label: "Cobertura en México" },
-          ].map(({ icon: Icon, label }) => (
+            [CheckCircle2, "Precisión técnica"],
+            [Cuboid, "Flujo BIM profesional"],
+            [Clock3, "Respuesta en 24h"],
+            [MapPin, "Cobertura en México"],
+          ].map(([Icon, label]) => (
             <div
               key={label}
               className="flex items-center gap-3 border-slate-200 md:border-r md:last:border-r-0"
@@ -497,7 +410,7 @@ export default function AsBuiltHomepageRedesign() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
       <section id="servicios" className="scroll-reveal bg-slate-50 px-6 py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -507,17 +420,10 @@ export default function AsBuiltHomepageRedesign() {
             description="Desarrollamos soluciones de diseño, modelado BIM, coordinación de ingeniería y documentación As-Built para convertir cada etapa del proyecto en información clara, precisa y útil para tomar decisiones."
           />
 
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={viewportOnce}
-            variants={staggerContainer}
-            className="space-y-12"
-          >
+          <div className="space-y-12">
             {serviceGroups.map((group) => (
-              <motion.section
+              <section
                 key={group.category}
-                variants={fadeInUp}
                 className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:p-8"
               >
                 <div className="mb-7 max-w-3xl">
@@ -533,11 +439,9 @@ export default function AsBuiltHomepageRedesign() {
                   {group.services.map((service) => {
                     const Icon = service.icon;
                     return (
-                      <motion.article
+                      <article
                         key={service.title}
-                        variants={fadeInUp}
-                        whileHover={{ y: -6 }}
-                        className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:shadow-xl"
+                        className="scroll-reveal group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                       >
                         <div className="relative h-44 overflow-hidden">
                           <img
@@ -563,13 +467,13 @@ export default function AsBuiltHomepageRedesign() {
                             ))}
                           </ul>
                         </div>
-                      </motion.article>
+                      </article>
                     );
                   })}
                 </div>
-              </motion.section>
+              </section>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -577,20 +481,12 @@ export default function AsBuiltHomepageRedesign() {
         <div className="mx-auto max-w-7xl">
           <SectionTitle eyebrow="Proceso" title="Nuestro proceso" />
 
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={viewportOnce}
-            variants={staggerContainer}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
-          >
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map((step, index) => {
               const Icon = step.icon;
               return (
-                <motion.article
+                <article
                   key={step.title}
-                  variants={fadeInUp}
-                  whileHover={{ y: -4 }}
                   className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
                 >
                   <div className="mb-5 flex items-center justify-between">
@@ -601,14 +497,14 @@ export default function AsBuiltHomepageRedesign() {
                   </div>
                   <h3 className="text-lg font-black text-slate-950">{step.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{step.text}</p>
-                </motion.article>
+                </article>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/*<section className="scroll-reveal bg-white px-6 py-20 lg:px-8">
+      <section className="scroll-reveal bg-white px-6 py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <SectionTitle eyebrow="Software" title="Herramientas que usamos" />
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -622,16 +518,10 @@ export default function AsBuiltHomepageRedesign() {
             ))}
           </div>
         </div>
-      </section>*/}
+      </section>
 
       <section id="contacto" className="scroll-reveal bg-white px-6 py-20 lg:px-8">
-        <motion.div
-          initial="initial"
-          whileInView="animate"
-          viewport={viewportOnce}
-          variants={fadeInUp}
-          className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl lg:grid-cols-[1.1fr_0.9fr]"
-        >
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl lg:grid-cols-[1.1fr_0.9fr]">
           <div className="p-6 md:p-10">
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-500">
               Contacto
@@ -760,7 +650,7 @@ export default function AsBuiltHomepageRedesign() {
               </div>
             </div>
           </aside>
-        </motion.div>
+        </div>
       </section>
 
       <footer className="bg-slate-950 px-6 py-12 text-white lg:px-8">
@@ -774,10 +664,11 @@ export default function AsBuiltHomepageRedesign() {
               Modelos As-Built precisos para arquitectura, ingeniería y construcción.
             </p>
           </div>
+
           {[
-            {
-              title: "Servicios",
-              links: [
+            [
+              "Servicios",
+              [
                 "Diseño de Inmueble",
                 "Diseño Arquitectónico",
                 "Modelado BIM y 3D",
@@ -786,16 +677,10 @@ export default function AsBuiltHomepageRedesign() {
                 "Coordinación de Ingeniería",
                 "Documentación As-Built",
               ],
-            },
-            {
-              title: "Nosotros",
-              links: ["Quiénes somos", "Nuestro enfoque", "Clientes"],
-            },
-            {
-              title: "Contacto",
-              links: ["info@asbuiltco.com", "+52 (662) 181-8698", "Hermosillo, Sonora"],
-            },
-          ].map(({ title, links }) => (
+            ],
+            ["Nosotros", ["Quiénes somos", "Nuestro enfoque", "Clientes"]],
+            ["Contacto", ["info@asbuiltco.com", "+52 (662) 181-8698", "Hermosillo, Sonora"]],
+          ].map(([title, links]) => (
             <div key={title}>
               <h3 className="font-black">{title}</h3>
               <ul className="mt-4 space-y-2 text-sm text-slate-400">
