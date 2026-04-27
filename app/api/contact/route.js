@@ -32,7 +32,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { name, email, company, phone, message } = body;
+    const { name, email, company, phone, projectType, message } = body;
 
     if (!name || !email || !message) {
       return Response.json(
@@ -50,6 +50,7 @@ export async function POST(request) {
         email,
         company: company || null,
         phone: phone || null,
+        project_type: project_type || null,
         message,
         status: 'new',
       })
@@ -81,6 +82,7 @@ export async function POST(request) {
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Empresa:</strong> ${company || 'No especificada'}</p>
         <p><strong>Teléfono:</strong> ${phone || 'No especificado'}</p>
+        <p><strong>Tipo de proyecto:</strong> ${project_type || 'No especificado'} </p>
         <p><strong>Mensaje:</strong></p>
         <p>${message}</p>
       `,
