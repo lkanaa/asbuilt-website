@@ -40,8 +40,29 @@ const images = {
  * Use positive values to move down:
  * "translate-y-2", "translate-y-4", "translate-y-6", "translate-y-8", "translate-y-10"
  */
-const HERO_PARAGRAPH_OFFSET_CLASS = "translate-y-30";
-const HERO_BUTTONS_OFFSET_CLASS = "translate-y-30";
+const HERO_PARAGRAPH_OFFSET_CLASS = "translate-y-0";
+const HERO_BUTTONS_OFFSET_CLASS = "translate-y-0";
+
+/**
+ * SERVICE CARD RESPONSIVE SIZE CONTROLS
+ *
+ * These use CSS clamp():
+ * clamp(minimum size, preferred responsive size, maximum size)
+ *
+ * Example:
+ * max-w-[clamp(18rem,28vw,30rem)]
+ * - 18rem = smallest card width
+ * - 28vw = grows based on viewport width
+ * - 30rem = largest card width
+ *
+ * To make cards bigger:
+ * - increase the first number for mobile/small screens
+ * - increase the vw number for stronger scaling
+ * - increase the last number for desktop max size
+ */
+const SERVICE_CARD_WIDTH_CLASS = "w-full max-w-[clamp(18rem,28vw,30rem)]";
+const SERVICE_CARD_HEIGHT_CLASS = "h-[clamp(15rem,20vw,23rem)]";
+const SERVICE_CARD_GRID_WIDTH_CLASS = "max-w-[1540px]";
 
 type Service = {
   title: string;
@@ -421,14 +442,14 @@ export default function AsBuiltHomepageRedesign() {
             <div className={`mt-11 flex flex-col gap-4 sm:flex-row ${HERO_BUTTONS_OFFSET_CLASS}`}>
               <a
                 href="#contacto"
-                className="clickable-motion inline-flex items-center justify-center rounded-xl bg-black px-9 py-4 text-center text-xl font-black text-white shadow-xl shadow-black/25 hover:bg-zinc-800"
+                className="clickable-motion inline-flex items-end justify-center rounded-xl bg-black px-9 py-4 text-center text-xl font-black text-white shadow-xl shadow-black/25 hover:bg-zinc-800"
               >
                 Solicitar cotización
               </a>
 
               <a
                 href="#servicios"
-                className="clickable-motion inline-flex items-center justify-center gap-8 rounded-xl border border-black/70 bg-white/50 px-9 py-4 text-center text-xl font-black text-black backdrop-blur hover:border-black hover:bg-white"
+                className="clickable-motion inline-flex items-end justify-center gap-8 rounded-xl border border-black/70 bg-white/50 px-9 py-4 text-center text-xl font-black text-black backdrop-blur hover:border-black hover:bg-white"
               >
                 Ver servicios
                 <ArrowRight className="h-6 w-6" />
@@ -485,13 +506,15 @@ export default function AsBuiltHomepageRedesign() {
                   </p>
                 </div>
 
-                <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-8">
+                <div className={`mx-auto flex ${SERVICE_CARD_GRID_WIDTH_CLASS} flex-wrap justify-center gap-8`}>
                   {group.services.map((service) => (
                     <div
                       key={service.title}
-                      className="scroll-reveal flex w-full max-w-[360px] flex-col items-center"
+                      className={`scroll-reveal flex ${SERVICE_CARD_WIDTH_CLASS} flex-col items-center`}
                     >
-                      <article className="group relative h-[260px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/30 transition duration-300 hover:-translate-y-1 hover:border-white/35 hover:shadow-white/10">
+                      <article
+                        className={`group relative ${SERVICE_CARD_HEIGHT_CLASS} w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/30 transition duration-300 hover:-translate-y-1 hover:border-white/35 hover:shadow-white/10`}
+                      >
                         <div className="pointer-events-none absolute inset-0 overflow-hidden">
                           <img
                             src={service.image}
@@ -700,7 +723,7 @@ export default function AsBuiltHomepageRedesign() {
                 <MapPin className="h-7 w-7 text-white" />
                 <div>
                   <p className="font-black">Hermosillo, Sonora</p>
-                  <p className="mt-1 text-sm text-zinc-300">Cobertura para proyectos en México</p>
+                  <p className="mt-1 text-zinc-300">Cobertura para proyectos en México</p>
                 </div>
               </div>
             </div>
