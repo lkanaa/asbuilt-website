@@ -7,8 +7,8 @@ export async function POST(request) {
     const contactFromEmail = process.env.CONTACT_FROM_EMAIL;
     const contactToEmail = process.env.CONTACT_TO_EMAIL;
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    //const supabaseUrl = process.env.SUPABASE_URL;
+    //const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!resendApiKey) {
       return Response.json(
