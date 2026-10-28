@@ -595,7 +595,7 @@ export default function AsBuiltHomepageRedesign() {
             <p className="mt-4 max-w-2xl text-zinc-300">
               Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos. También puedes contactarnos directamente al{" "}
               <a
-                href="tel:+526621818698"
+                href="https://wa.me/+526621818698"
                 className="font-black text-white underline decoration-[#b5121b] decoration-2 underline-offset-4 transition hover:text-zinc-300"
               >
                 +52 (662) 181-8698
