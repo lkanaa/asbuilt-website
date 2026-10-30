@@ -95,7 +95,7 @@ export async function POST(request) {
         {
           success: false,
           saved: true,
-          messageId: savedMessage.id,
+          //messageId: savedMessage.id,
           error: 'Message was saved, but email failed to send.',
           details: emailError,
         },
@@ -106,7 +106,7 @@ export async function POST(request) {
     return Response.json({
       success: true,
       saved: true,
-      messageId: savedMessage.id,
+      //messageId: savedMessage.id,
       email: emailData,
     });
   } catch (error) {
