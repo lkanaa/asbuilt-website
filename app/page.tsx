@@ -595,10 +595,10 @@ export default function AsBuiltHomepageRedesign() {
             <p className="mt-4 max-w-2xl text-zinc-300">
               Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos. También puedes contactarnos directamente al{" "}
               <a
-                href="https://wa.me/+526621818698"
+                href="https://wa.me/+526623748782"
                 className="font-black text-white underline decoration-[#b5121b] decoration-2 underline-offset-4 transition hover:text-zinc-300"
               >
-                +52 (662) 181-8698
+                +52 (662) 374 8782
               </a>
               .
             </p>
@@ -716,6 +716,14 @@ export default function AsBuiltHomepageRedesign() {
                 <div>
                   <p className="font-black">+52 (662) 181-8698</p>
                   <p className="mt-1 text-sm text-zinc-300">Teléfono / WhatsApp</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <Phone className="h-7 w-7 text-white" />
+                <div>
+                  <p className="font-black">WhatsApp</p>
+                  <p className="mt-1 text-sm text-zinc-300">Disponibles en WhatsApp/p>
                 </div>
               </div>
 
