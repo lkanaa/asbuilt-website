@@ -16,6 +16,8 @@ import {
   Phone,
 } from "lucide-react";
 
+
+
 const images = {
   logo: "/images/logo.jpeg",
   hero: "/images/hero.png",
@@ -29,6 +31,7 @@ const images = {
   clashAnalysis: "/images/clash-analysis.png",
   clashResolution: "/images/clash-resolution.png",
   arqdesign: "/images/arq-design.png",
+  whatsApp: "/images/whatsApp.png",
 };
 
 /**
@@ -711,6 +714,10 @@ export default function AsBuiltHomepageRedesign() {
                 </div>
               </div>
 
+
+
+
+
               <div className="flex gap-4">
                 <Phone className="h-7 w-7 text-white" />
                 <div>
@@ -719,13 +726,47 @@ export default function AsBuiltHomepageRedesign() {
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <Phone className="h-7 w-7 text-white" />
+
+              <div className="relative flex gap-4">
+                <a href="https://wa.me/+526623748782">
+                  <img
+                    className="h-8 w-8 flex gap-4"
+                    src={images.whatsApp}
+                    alt="WhatsApp"
+                  />
+                </a>
                 <div>
-                  <p className="font-black">WhatsApp</p>
-                  <p className="mt-1 text-sm text-zinc-300">Disponibles en WhatsApp/p>
+                  <p className="font-black">WhatsApp </p>
+                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Envíanos un WhatsApp</a>
+                  <a
+                  href="https://wa.me/+526623748782"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Contactar por WhatsApp"
+                   className="absolute inset-0 z-10"
+                   />
                 </div>
               </div>
+
+
+
+{/*              <div className="flex gap-4">
+                <a href="https://wa.me/+526623748782">
+                  <img
+                    className="h-8 w-8 flex gap-4"
+                    src={images.whatsApp}
+                    alt="WhatsApp"
+                  />
+                </a>
+                <div>
+                  <a href="https://wa.me/+526623748782" className="font-black">WhatsApp </a>
+                  <p></p>
+                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Envíanos un WhatsApp</a>
+                </div>
+              </div>*/}
+
+
+
 
               <div className="flex gap-4">
                 <MapPin className="h-7 w-7 text-white" />
