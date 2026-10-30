@@ -714,8 +714,8 @@ export default function AsBuiltHomepageRedesign() {
               <div className="flex gap-4">
                 <Phone className="h-7 w-7 text-white" />
                 <div>
-                  <p className="font-black">+52 (662) 181-8698</p>
-                  <p className="mt-1 text-sm text-zinc-300">Teléfono / WhatsApp</p>
+                  <p className="font-black">+52 (662) 374 8782</p>
+                  <p className="mt-1 text-sm text-zinc-300">Teléfono</p>
                 </div>
               </div>
 
@@ -772,7 +772,7 @@ export default function AsBuiltHomepageRedesign() {
             },
             {
               title: "Contacto",
-              links: ["info@asbuiltco.com", "+52 (662) 181-8698", "Hermosillo, Sonora"],
+              links: ["info@asbuiltco.com", "+52 (662 374 8782", "Hermosillo, Sonora"],
             },
           ].map(({ title, links }) => (
             <div key={title}>
