@@ -24,12 +24,12 @@ export async function POST(request) {
       );
     }
 
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
-      return Response.json(
-        { error: 'Missing Supabase environment variables.' },
-        { status: 500 }
-      );
-    }
+    // if (!supabaseUrl || !supabaseServiceRoleKey) {
+    //   return Response.json(
+    //     { error: 'Missing Supabase environment variables.' },
+    //     { status: 500 }
+    //   );
+    // }
 
     const body = await request.json();
     const { name, email, company, phone, project_type, message } = body;
@@ -41,33 +41,33 @@ export async function POST(request) {
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+    //const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    const { data: savedMessage, error: dbError } = await supabase
-      .from('contact_messages')
-      .insert({
-        name,
-        email,
-        company: company || null,
-        phone: phone || null,
-        project_type: project_type || null,
-        message,
-        status: 'new',
-      })
-      .select()
-      .single();
-
-    if (dbError) {
-      console.error('Supabase insert error:', dbError);
-
-      return Response.json(
-        {
-          error: 'Failed to save message to database.',
-          details: dbError.message,
-        },
-        { status: 500 }
-      );
-    }
+    // const { data: savedMessage, error: dbError } = await supabase
+    //   .from('contact_messages')
+    //   .insert({
+    //     name,
+    //     email,
+    //     company: company || null,
+    //     phone: phone || null,
+    //     project_type: project_type || null,
+    //     message,
+    //     status: 'new',
+    //   })
+    //   .select()
+    //   .single();
+    //
+    // if (dbError) {
+    //   console.error('Supabase insert error:', dbError);
+    //
+    //   return Response.json(
+    //     {
+    //       error: 'Failed to save message to database.',
+    //       details: dbError.message,
+    //     },
+    //     { status: 500 }
+    //   );
+    // }
 
     const resend = new Resend(resendApiKey);
 
