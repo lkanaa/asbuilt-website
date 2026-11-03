@@ -19,19 +19,27 @@ import {
 
 
 const images = {
-  logo: "/images/logo.jpeg",
+  logo: "/images/logo.png",
+  logo2: "/images/logo 2.png",
   hero: "/images/hero.png",
   heroBlueprint: "/images/asd.png",
   bimBuildingTransparent: "/images/consulate-transparent.png",
+  disenoInmueble: "/images/disenoInmueble.jpeg",
+  nube: "/images/nube.png",
   ortofoto: "/images/ortofoto.png",
-  ortofotoProcessing: "/images/ortofoto-processing.png",
-  ortofotoAnalysis: "/images/ortofoto-analysis.png",
+  arquitectura: "/images/arquitectura.jpg",
+  mep: "/images/MEP.jpg",
+  topografia: "/images/topografia.jpg",
+  ortofotografia: "/images/ortofotografia.jpg",
+  //ortofotoProcessing: "/images/ortofoto-processing.png",
+  //ortofotoAnalysis: "/images/ortofoto-analysis.png",
   bimBuilding: "/images/bim-building.png",
   clashGeneral: "/images/clash-general.png",
   clashAnalysis: "/images/clash-analysis.png",
   clashResolution: "/images/clash-resolution.png",
   arqdesign: "/images/arq-design.png",
   whatsApp: "/images/whatsApp.png",
+  
 };
 
 /**
@@ -82,87 +90,141 @@ type ServiceGroup = {
 
 const serviceGroups: ServiceGroup[] = [
   {
-    category: "Diseño",
+    category: "Nuestro catalogo",
     description:
-      "Servicios enfocados en crear, desarrollar y definir el inmueble desde su concepto inicial hasta una propuesta arquitectónica clara.",
-    services: [
+    "Servicios enfocados en crear, desarrollar y definir el inmueble desde su concepto inicial hasta una propuesta arquitectónica clara.",
+    services: 
+    [
       {
         title: "Diseño de Inmueble",
         description:
-          "Definimos la distribución, concepto y funcionalidad del inmueble para convertir una idea inicial en una propuesta clara y viable.",
+        "Definimos la distribución, concepto y funcionalidad del inmueble para convertir una idea inicial en una propuesta clara y viable.",
         bullets: [
           "Conceptualización del espacio",
-          "Distribución funcional",
-          "Propuesta integral del inmueble",
-        ],
-        image: images.hero,
-      },
-      {
-        title: "Diseño Arquitectónico",
-        description:
-          "Desarrollamos criterios arquitectónicos, planos y soluciones visuales para comunicar el proyecto con claridad desde sus primeras etapas.",
-        bullets: [
-          "Anteproyecto arquitectónico",
-          "Desarrollo de planos",
-          "Criterios estéticos y funcionales",
-        ],
-        image: images.arqdesign,
-      },
+           "Distribución funcional",
+           "Propuesta integral del inmueble",
+         ],
+         image: images.hero,
+       },
+       {
+         title: "Diseño Arquitectónico",
+         description:
+           "Desarrollamos criterios arquitectónicos, planos y soluciones visuales para comunicar el proyecto con claridad desde sus primeras etapas.",
+         bullets: [
+           "Anteproyecto arquitectónico",
+           "Plantas, cortes y fachadas",
+           "Diseño estético y funcional",
+         ],
+         image: images.arqdesign,
+       },
+       {
+         title: "Levantamiento por nube de puntos",
+         description:
+           "Capturamos y procesamos información tridimensional del inmueble existente para generar una base precisa de modelado y documentación.",
+         bullets: [
+           "Escaneo láser 3D",
+           "Procesamiento de nubes de puntos",
+           "Registro y alineación de escaneos",
+         ],
+         image: images.nube,
+       },
+       {
+         title: "Documentación As-Built",
+         description:
+           "Generamos documentación técnica que representa las condiciones reales de una construcción, facilitando su operación, mantenimiento y futuras modificaciones.",
+         bullets: [
+           "Planos de estado actual",
+           "Conversión y actualización CAD",
+           "Informes y documentación técnica",
+         ],
+         image: images.clashResolution,
+       },
+       {
+         title: "Modelado BIM",
+         description:
+           "Creamos modelos digitales inteligentes para visualizar, cuantificar y gestionar información arquitectónica, estructural y de instalaciones.",
+         bullets: [
+           "Modelado 3D por disciplinas",
+           "Cuantificación de elementos",
+           "Gestión de información BIM",
+         ],
+         image: images.bimBuilding,
+       },
+    ],
+  },  
+  {
+    category: "Diseño",
+    description:
+      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
+    services: [
+       {
+         title: "Arquitectura",
+         description:
+           "Desarrollamos soluciones arquitectónicas que integran funcionalidad, estética y aprovechamiento del espacio en proyectos de construcción.",
+         bullets: [
+           "Diseño y distribución de espacios",
+           "Desarrollo de planos arquitectónicos",
+           "Soluciones espaciales y constructivas",
+         ],
+         image: images.arquitectura,
+       },
+       {
+         title: "Diseño MEP",
+         description:
+           "Diseñamos y desarrollamos sistemas mecánicos, eléctricos e hidrosanitarios para garantizar su correcta integración dentro del inmueble.",
+         bullets: [
+           "Diseño de instalaciones mecánicas",
+           "Diseño de sistemas eléctricos",
+           "Diseño hidrosanitario y pluvial",
+         ],
+         image: images.mep,
+       },
     ],
   },
   {
-    category: "Modelado BIM",
+    category: "Geomática",
     description:
       "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
     services: [
       {
-        title: "Modelado BIM y 3D",
+        title: "Topografía",
         description:
-          "Creamos modelos digitales precisos para visualizar, cuantificar y coordinar información arquitectónica, estructural y MEP.",
-        bullets: ["Arquitectura, estructura y MEP", "Cuantificación", "Visualización"],
-        image: images.bimBuilding,
-      },
-      {
-        title: "Modelado de Disciplinas",
-        description:
-          "Modelamos disciplinas técnicas para integrar arquitectura, estructura e instalaciones dentro de un flujo BIM coordinado.",
-        bullets: ["Arquitectura", "Estructura", "Instalaciones MEP"],
-        image: images.clashGeneral,
-      },
-    ],
-  },
-  {
-    category: "Coordinación y Documentación",
-    description:
-      "Procesos técnicos para validar condiciones existentes, detectar interferencias y generar entregables útiles para obra y operación.",
-    services: [
-      {
-        title: "Levantamiento por nube de puntos",
-        description:
-          "Procesamos información capturada en sitio para generar bases confiables de modelado, coordinación y documentación técnica.",
-        bullets: ["Escaneo láser 3D", "Procesamiento", "Registro y alineación"],
-        image: images.ortofoto,
-      },
-      {
-        title: "Coordinación de Ingeniería",
-        description:
-          "Coordinamos disciplinas y revisamos interferencias para reducir errores, retrabajos y conflictos antes de llegar a obra.",
+          "Realizamos levantamientos y mediciones del terreno para obtener información precisa sobre sus dimensiones, elevaciones y características físicas.",
         bullets: [
-          "Integración de disciplinas",
-          "Revisión de interferencias",
-          "Optimización de soluciones técnicas",
+          "Levantamientos topográficos",
+          "Nivelación y altimetría",
+          "Generación de planos topográficos",
         ],
-        image: images.clashAnalysis,
-      },
+        image: images.topografia,
+      },       
       {
-        title: "Documentación As-Built",
-        description:
-          "Generamos documentación final clara, verificable y lista para construcción, operación, mantenimiento o cierre técnico.",
-        bullets: ["Planos", "Conversión CAD", "Informes de calidad"],
-        image: images.clashResolution,
-      },
+         title: "Ortofotografía",
+         description:
+           "Generamos imágenes aéreas corregidas geométricamente que permiten medir, analizar y documentar superficies y terrenos con precisión.",
+         bullets: [
+           "Captura aérea mediante drones",
+           "Procesamiento fotogramétrico",
+           //"Generación de ortomosaicos georreferenciados",
+         ],
+         image: images.ortofotografia,
+       },
     ],
   },
+//  EJEMPLO DE OTRA CATEGORIA
+//  {
+//    category: "Modelado BIM",
+//    description:
+//      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
+//    services: [
+//      {
+//        title: "Documentación As-Built",
+//        description:
+//          "Generamos documentación final clara, verificable y lista para construcción, operación, mantenimiento o cierre técnico.",
+//        bullets: ["Planos", "Conversión CAD", "Informes de calidad"],
+//        image: images.clashResolution,
+//      },
+//    ],
+//  },
 ];
 
 type ProcessStep = {
@@ -175,17 +237,17 @@ const process: ProcessStep[] = [
   {
     icon: ClipboardList,
     title: "Revisamos tu proyecto",
-    text: "Analizamos alcance, objetivos y requerimientos técnicos.",
+    text: "Nos ponemos en contacto con usted para revisar detalles con el equipo de trabajo y organizamos una cotizacion",
   },
   {
     icon: Layers3,
-    title: "Capturamos o recibimos la información",
-    text: "Trabajamos con escaneo 3D, planos, fotografías o documentación existente.",
+    title: "Elaboramos en una estrategia de trabajo",
+    text: "Capturamos y recibimos toda la inforación para proceder.",
   },
   {
     icon: Cuboid,
-    title: "Modelamos y coordinamos",
-    text: "Generamos modelos BIM y coordinamos disciplinas para validación.",
+    title: "Nos enfocamos en el proyecto",
+    text: "Ejecutamos el servicio contratado con el máximo detalle posible.",
   },
   {
     icon: CheckCircle2,
@@ -311,7 +373,7 @@ export default function AsBuiltHomepageRedesign() {
   };
 
   return (
-    <main className="min-h-screen scroll-smooth bg-black text-white">
+    <main className="min-h-screen scroll-smooth bg-zinc-900 text-white">
       <style>{`
         html {
           scroll-behavior: smooth;
@@ -366,7 +428,7 @@ export default function AsBuiltHomepageRedesign() {
       `}</style>
 
       <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 text-black shadow-sm backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8 text-base">
           <a href="#" className="flex items-center gap-3">
             <img
               src={images.logo}
@@ -375,7 +437,7 @@ export default function AsBuiltHomepageRedesign() {
             />
           </a>
 
-          <div className="hidden items-center gap-9 text-base font-black text-black/85 md:flex">
+          <div className="hidden items-center gap-9 text-2xl font-black text-black/85 md:flex">
             <a href="#servicios" className="transition hover:text-[#b5121b]">
               Servicios
             </a>
@@ -389,7 +451,7 @@ export default function AsBuiltHomepageRedesign() {
 
           <a
             href="#contacto"
-            className="clickable-motion hidden rounded-xl border border-black bg-black px-6 py-3 text-base font-black text-white shadow-lg shadow-black/15 hover:bg-zinc-800 md:inline-flex"
+            className="clickable-motion hidden rounded-xl border border-black bg-black px-14 py-5 text-base font-black text-white shadow-lg shadow-black/15 hover:bg-[#b5121b] md:inline-flex"
           >
             Cotizar
           </a>
@@ -462,7 +524,7 @@ export default function AsBuiltHomepageRedesign() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-black">
+      <section className="border-y bg-black">
         <div className="mx-auto grid max-w-7xl gap-5 px-6 py-7 md:grid-cols-4 lg:px-8">
           {[
             { icon: CheckCircle2, label: "Precisión técnica" },
@@ -485,7 +547,7 @@ export default function AsBuiltHomepageRedesign() {
 
       <section
         id="servicios"
-        className="scroll-reveal bg-[linear-gradient(180deg,#000000_0%,#111111_52%,#000000_100%)] px-6 py-20 lg:px-8"
+        className="py-20 lg:px-8 scroll-reveal px-6"
       >
         <div className="mx-auto max-w-7xl">
           <SectionTitle
@@ -498,7 +560,7 @@ export default function AsBuiltHomepageRedesign() {
             {serviceGroups.map((group) => (
               <section
                 key={group.category}
-                className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 text-center shadow-2xl shadow-black/20 backdrop-blur md:p-8"
+                className="border border-white/10 bg-white/[0.04] p-6 text-center shadow-2xl shadow-black/20 md:p-8 backdrop-blur rounded-[2rem]"
               >
                 <div className="mx-auto mb-10 max-w-3xl text-center">
                   <p className="text-sm font-black uppercase tracking-[0.22em] text-[#b5121b]">
@@ -596,16 +658,20 @@ export default function AsBuiltHomepageRedesign() {
             </h2>
 
             <p className="mt-4 max-w-2xl text-zinc-300">
-              Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos. También puedes contactarnos directamente al{" "}
+              Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos. También puedes contactarnos directamente a los teléfonos {" "}
               <a
                 href="https://wa.me/+526623748782"
-                className="font-black text-white underline decoration-[#b5121b] decoration-2 underline-offset-4 transition hover:text-zinc-300"
+                className="font-black text-white underline decoration-[#ffffff] decoration-2 underline-offset-4 transition hover:text-zinc-300"
               >
-                +52 (662) 374 8782
+                (662) 374 8782.
               </a>
-              .
             </p>
-
+              <a
+                href="https://wa.me/+526623673378"
+                className="font-black text-white underline decoration-[#ffffff] decoration-2 underline-offset-4 transition hover:text-zinc-300"
+              >
+                (662) 367 3378.
+              </a>
             {alreadySubmitted ? (
               <div className="mt-8 rounded-3xl border border-white/10 bg-white/10 p-8 text-center">
                 <CheckCircle2 className="mx-auto h-12 w-12 text-white" />
@@ -662,12 +728,14 @@ export default function AsBuiltHomepageRedesign() {
                 >
                   <option value="">Tipo de proyecto</option>
                   <option value="Diseño de Inmueble">Diseño de Inmueble</option>
-                  <option value="Diseño Arquitectónico">Diseño Arquitectónico</option>
-                  <option value="Modelado BIM y 3D">Modelado BIM y 3D</option>
-                  <option value="Modelado de Disciplinas">Modelado de Disciplinas</option>
-                  <option value="Levantamiento por nube de puntos">Levantamiento por nube de puntos</option>
-                  <option value="Coordinación de Ingeniería">Coordinación de Ingeniería</option>
-                  <option value="Documentación As-Built">Documentación As-Built</option>
+                  <option value="Levantamiento por nube de puntos">Diseño Arquitectónico</option>
+                  <option value="Documentación As-Built">Modelado BIM y 3D</option>
+                  <option value="Modelado BIM">Modelado de Disciplinas</option>
+                  <option value="Arquitectura">Levantamiento por nube de puntos</option>
+                  <option value="Diseño MEP ">Coordinación de Ingeniería</option>
+                  <option value="Topografía ">Documentación As-Built</option>
+                  <option value="Ortofotografía ">Otros</option>
+
                 </select>
 
                 <textarea
@@ -710,9 +778,12 @@ export default function AsBuiltHomepageRedesign() {
                 <Mail className="h-7 w-7 text-white" />
                 <div>
                   <p className="font-black">info@asbuiltco.com</p>
-                  <p className="mt-1 text-sm text-zinc-300">Correo de contacto</p>
+                  <p className="font-black">proyectos@asbuiltco.com</p>
+                  <p className="mt-1 text-sm text-zinc-300">Correos de contacto</p>
                 </div>
               </div>
+              
+              
 
 
 
@@ -721,7 +792,8 @@ export default function AsBuiltHomepageRedesign() {
               <div className="flex gap-4">
                 <Phone className="h-7 w-7 text-white" />
                 <div>
-                  <p className="font-black">+52 (662) 374 8782</p>
+                  <p className="font-black">(662) 374 8782</p>
+                  <p className="font-black">(662) 367 3378</p>
                   <p className="mt-1 text-sm text-zinc-300">Teléfono</p>
                 </div>
               </div>
@@ -737,7 +809,7 @@ export default function AsBuiltHomepageRedesign() {
                 </a>
                 <div>
                   <p className="font-black">WhatsApp </p>
-                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Envíanos un WhatsApp</a>
+                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Haz click para enviarnos un WhatsApp</a>
                   <a
                   href="https://wa.me/+526623748782"
                    target="_blank"
@@ -772,7 +844,7 @@ export default function AsBuiltHomepageRedesign() {
                 <MapPin className="h-7 w-7 text-white" />
                 <div>
                   <p className="font-black">Hermosillo, Sonora</p>
-                  <p className="mt-1 text-zinc-300">Cobertura para proyectos en México</p>
+                  <p className="mt-1 text-zinc-300">Cobertura para proyectos en todo México</p>
                 </div>
               </div>
             </div>
@@ -784,7 +856,7 @@ export default function AsBuiltHomepageRedesign() {
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
           <div>
             <img
-              src={images.logo}
+              src={images.logo2}
               alt="As-Built"
               className="h-16 w-auto rounded-md object-contain"
             />
