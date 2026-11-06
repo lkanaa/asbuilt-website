@@ -1,85 +1,89 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   CheckCircle2,
-  Clock3,
   ClipboardList,
   Cuboid,
+  FileText,
   Layers3,
   Mail,
   MapPin,
   Menu,
+  MessageCircle,
   Phone,
+  X,
 } from "lucide-react";
 
-
+/* =========================================================
+   IMÁGENES
+   ========================================================= */
 
 const images = {
   logo: "/images/logo.png",
   logo2: "/images/logo 2.png",
-  hero: "/images/hero.png",
   heroBlueprint: "/images/asd.png",
-  bimBuildingTransparent: "/images/consulate-transparent.png",
-  disenoInmueble: "/images/disenoInmueble.jpeg",
   nube: "/images/nube.png",
-  ortofoto: "/images/ortofoto.png",
   arquitectura: "/images/arquitectura.jpg",
   mep: "/images/MEP.jpg",
   topografia: "/images/topografia.jpg",
   ortofotografia: "/images/ortofotografia.jpg",
-  //ortofotoProcessing: "/images/ortofoto-processing.png",
-  //ortofotoAnalysis: "/images/ortofoto-analysis.png",
   bimBuilding: "/images/bim-building.png",
-  clashGeneral: "/images/clash-general.png",
-  clashAnalysis: "/images/clash-analysis.png",
   clashResolution: "/images/clash-resolution.png",
-  arqdesign: "/images/arq-design.png",
-  whatsApp: "/images/whatsApp.png",
-  
 };
 
-/**
- * HERO MANUAL POSITION CONTROLS
- *
- * Use negative values to move up:
- * "-translate-y-2", "-translate-y-4", "-translate-y-6", "-translate-y-8", "-translate-y-10"
- *
- * Use positive values to move down:
- * "translate-y-2", "translate-y-4", "translate-y-6", "translate-y-8", "translate-y-10"
- */
-const HERO_PARAGRAPH_OFFSET_CLASS = "translate-y-0";
-const HERO_BUTTONS_OFFSET_CLASS = "translate-y-0";
+/* =========================================================
+   CONTROLES DE TAMAÑO
 
-/**
- * SERVICE CARD RESPONSIVE SIZE CONTROLS
- *
- * These use CSS clamp():
- * clamp(minimum size, preferred responsive size, maximum size)
- *
- * Example:
- * max-w-[clamp(18rem,28vw,30rem)]
- * - 18rem = smallest card width
- * - 28vw = grows based on viewport width
- * - 30rem = largest card width
- *
- * To make cards bigger:
- * - increase the first number for mobile/small screens
- * - increase the vw number for stronger scaling
- * - increase the last number for desktop max size
- */
-const SERVICE_CARD_WIDTH_CLASS = "w-full max-w-[clamp(18rem,28vw,30rem)]";
-const SERVICE_CARD_HEIGHT_CLASS = "h-[clamp(15rem,20vw,23rem)]";
-const SERVICE_CARD_GRID_WIDTH_CLASS = "max-w-[1540px]";
+   Tarjetas normales:
+   - SERVICE_CARD_WIDTH_CLASS controla el ancho.
+   - SERVICE_CARD_HEIGHT_CLASS controla la altura de la imagen.
+
+   Servicio destacado:
+   - FEATURED_SECTION_WIDTH_CLASS controla el ancho total.
+   - FEATURED_IMAGE_HEIGHT_CLASS controla la altura de la imagen.
+
+   Puedes agregar cardWidthClass y cardHeightClass a cualquier
+   servicio para personalizar su tamaño individualmente.
+   ========================================================= */
+
+const SERVICE_CARD_WIDTH_CLASS = "w-full max-w-[380px]";
+const SERVICE_CARD_HEIGHT_CLASS = "h-[240px] md:h-[260px]";
+
+const FEATURED_SECTION_WIDTH_CLASS = "max-w-7xl";
+const FEATURED_IMAGE_HEIGHT_CLASS =
+  "h-[280px] sm:h-[380px] lg:h-[520px]";
+
+/* =========================================================
+   CONTACTO
+   ========================================================= */
+
+const CONTACT = {
+  email: "info@asbuiltco.com",
+  projectsEmail: "proyectos@asbuiltco.com",
+  phone: "(662) 374 8782",
+  secondPhone: "(662) 367 3378",
+  phoneHref: "tel:+526623748782",
+  secondPhoneHref: "tel:+526623673378",
+  whatsapp: "https://wa.me/526623748782",
+  location: "Hermosillo, Sonora",
+};
+
+/* =========================================================
+   SERVICIOS
+   ========================================================= */
 
 type Service = {
   title: string;
   description: string;
+  idealFor: string;
   bullets: string[];
   image: string;
+  cardWidthClass?: string;
+  cardHeightClass?: string;
 };
 
 type ServiceGroup = {
@@ -88,173 +92,230 @@ type ServiceGroup = {
   services: Service[];
 };
 
+const featuredService: Service = {
+  title: "Levantamiento por nube de puntos",
+  description:
+    "Documentamos la geometría del inmueble mediante escaneo láser 3D y procesamos la información para obtener una referencia del estado existente.",
+  idealFor:
+    "Remodelaciones, documentación de inmuebles existentes y proyectos que necesitan una base de información para modelado.",
+  bullets: [
+    "Escaneo láser 3D",
+    "Procesamiento de nubes de puntos",
+    "Registro y alineación de escaneos",
+  ],
+  image: images.nube,
+};
+
 const serviceGroups: ServiceGroup[] = [
   {
-    category: "Nuestro catalogo",
+    category: "BIM y documentación",
     description:
-    "Servicios enfocados en crear, desarrollar y definir el inmueble desde su concepto inicial hasta una propuesta arquitectónica clara.",
-    services: 
-    [
+      "Convertimos la información del inmueble en modelos y documentos que apoyan el desarrollo del proyecto.",
+    services: [
       {
-        title: "Diseño de Inmueble",
+        title: "Documentación As-Built",
         description:
-        "Definimos la distribución, concepto y funcionalidad del inmueble para convertir una idea inicial en una propuesta clara y viable.",
+          "Elaboramos planos y documentación técnica que representan las condiciones existentes del inmueble.",
+        idealFor: "Remodelación, mantenimiento y gestión del inmueble.",
         bullets: [
-          "Conceptualización del espacio",
-           "Distribución funcional",
-           "Propuesta integral del inmueble",
-         ],
-         image: images.hero,
-       },
-       {
-         title: "Diseño Arquitectónico",
-         description:
-           "Desarrollamos criterios arquitectónicos, planos y soluciones visuales para comunicar el proyecto con claridad desde sus primeras etapas.",
-         bullets: [
-           "Anteproyecto arquitectónico",
-           "Plantas, cortes y fachadas",
-           "Diseño estético y funcional",
-         ],
-         image: images.arqdesign,
-       },
-       {
-         title: "Levantamiento por nube de puntos",
-         description:
-           "Capturamos y procesamos información tridimensional del inmueble existente para generar una base precisa de modelado y documentación.",
-         bullets: [
-           "Escaneo láser 3D",
-           "Procesamiento de nubes de puntos",
-           "Registro y alineación de escaneos",
-         ],
-         image: images.nube,
-       },
-       {
-         title: "Documentación As-Built",
-         description:
-           "Generamos documentación técnica que representa las condiciones reales de una construcción, facilitando su operación, mantenimiento y futuras modificaciones.",
-         bullets: [
-           "Planos de estado actual",
-           "Conversión y actualización CAD",
-           "Informes y documentación técnica",
-         ],
-         image: images.clashResolution,
-       },
-       {
-         title: "Modelado BIM",
-         description:
-           "Creamos modelos digitales inteligentes para visualizar, cuantificar y gestionar información arquitectónica, estructural y de instalaciones.",
-         bullets: [
-           "Modelado 3D por disciplinas",
-           "Cuantificación de elementos",
-           "Gestión de información BIM",
-         ],
-         image: images.bimBuilding,
-       },
+          "Planos de estado actual",
+          "Conversión y actualización CAD",
+          "Documentación técnica",
+        ],
+        image: images.clashResolution,
+      },
+      {
+        title: "Modelado BIM",
+        description:
+          "Desarrollamos modelos digitales que integran geometría e información de las disciplinas del proyecto.",
+        idealFor: "Visualización, cuantificación y coordinación.",
+        bullets: [
+          "Modelado 3D por disciplinas",
+          "Cuantificación de elementos",
+          "Gestión de información BIM",
+        ],
+        image: images.bimBuilding,
+      },
     ],
-  },  
+  },
   {
     category: "Diseño",
     description:
-      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
+      "Soluciones arquitectónicas y de instalaciones para responder a las necesidades de cada inmueble.",
     services: [
-       {
-         title: "Arquitectura",
-         description:
-           "Desarrollamos soluciones arquitectónicas que integran funcionalidad, estética y aprovechamiento del espacio en proyectos de construcción.",
-         bullets: [
-           "Diseño y distribución de espacios",
-           "Desarrollo de planos arquitectónicos",
-           "Soluciones espaciales y constructivas",
-         ],
-         image: images.arquitectura,
-       },
-       {
-         title: "Diseño MEP",
-         description:
-           "Diseñamos y desarrollamos sistemas mecánicos, eléctricos e hidrosanitarios para garantizar su correcta integración dentro del inmueble.",
-         bullets: [
-           "Diseño de instalaciones mecánicas",
-           "Diseño de sistemas eléctricos",
-           "Diseño hidrosanitario y pluvial",
-         ],
-         image: images.mep,
-       },
+      {
+        title: "Arquitectura",
+        description:
+          "Diseñamos espacios que integran distribución, funcionalidad y expresión arquitectónica.",
+        idealFor: "Diseño de espacios y desarrollo arquitectónico.",
+        bullets: [
+          "Diseño y distribución de espacios",
+          "Planos arquitectónicos",
+          "Soluciones espaciales y constructivas",
+        ],
+        image: images.arquitectura,
+      },
+      {
+        title: "Diseño MEP",
+        description:
+          "Desarrollamos sistemas mecánicos, eléctricos e hidrosanitarios y coordinamos su integración con el inmueble.",
+        idealFor: "Diseño y coordinación de instalaciones.",
+        bullets: [
+          "Instalaciones mecánicas",
+          "Sistemas eléctricos",
+          "Sistemas hidrosanitarios y pluviales",
+        ],
+        image: images.mep,
+      },
     ],
   },
   {
     category: "Geomática",
     description:
-      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
+      "Información del terreno y del sitio para apoyar la planificación y el diseño.",
     services: [
       {
         title: "Topografía",
         description:
-          "Realizamos levantamientos y mediciones del terreno para obtener información precisa sobre sus dimensiones, elevaciones y características físicas.",
+          "Medimos y representamos las dimensiones, elevaciones y características físicas del terreno.",
+        idealFor: "Planificación, diseño y ejecución de proyectos.",
         bullets: [
           "Levantamientos topográficos",
           "Nivelación y altimetría",
-          "Generación de planos topográficos",
+          "Planos topográficos",
         ],
         image: images.topografia,
-      },       
+      },
       {
-         title: "Ortofotografía",
-         description:
-           "Generamos imágenes aéreas corregidas geométricamente que permiten medir, analizar y documentar superficies y terrenos con precisión.",
-         bullets: [
-           "Captura aérea mediante drones",
-           "Procesamiento fotogramétrico",
-           //"Generación de ortomosaicos georreferenciados",
-         ],
-         image: images.ortofotografia,
-       },
+        title: "Ortofotografía",
+        description:
+          "Procesamos fotografías aéreas para generar imágenes georreferenciadas y corregidas geométricamente.",
+        idealFor: "Análisis de terrenos y documentación del sitio.",
+        bullets: [
+          "Captura aérea mediante drones",
+          "Procesamiento fotogramétrico",
+        ],
+        image: images.ortofotografia,
+      },
     ],
   },
-//  EJEMPLO DE OTRA CATEGORIA
-//  {
-//    category: "Modelado BIM",
-//    description:
-//      "Modelos digitales precisos para visualizar, cuantificar, coordinar y documentar el proyecto con información confiable.",
-//    services: [
-//      {
-//        title: "Documentación As-Built",
-//        description:
-//          "Generamos documentación final clara, verificable y lista para construcción, operación, mantenimiento o cierre técnico.",
-//        bullets: ["Planos", "Conversión CAD", "Informes de calidad"],
-//        image: images.clashResolution,
-//      },
-//    ],
-//  },
 ];
+
+const projectTypes = [
+  featuredService.title,
+  ...serviceGroups.flatMap((group) =>
+    group.services.map((service) => service.title)
+  ),
+  "Otro / Necesito orientación",
+];
+
+/* =========================================================
+   MUESTRAS VISUALES
+
+   Estas tarjetas NO se presentan como proyectos ejecutados.
+
+   Sustitúyelas por casos reales cuando tengas:
+   - Nombre autorizado del proyecto.
+   - Ubicación.
+   - Alcance.
+   - Entregables.
+   - Fotografías autorizadas.
+   ========================================================= */
+
+const visualExamples = [
+  {
+    title: "Información del inmueble existente",
+    category: "Nube de puntos",
+    description:
+      "Referencia visual del tipo de información utilizada para documentar la geometría de un inmueble.",
+    image: images.nube,
+    service: featuredService.title,
+  },
+  {
+    title: "Representación digital del proyecto",
+    category: "Modelado BIM",
+    description:
+      "Referencia visual de un modelo digital para comunicar la geometría y organización del proyecto.",
+    image: images.bimBuilding,
+    service: "Modelado BIM",
+  },
+  {
+    title: "Desarrollo arquitectónico",
+    category: "Arquitectura",
+    description:
+      "Referencia visual para mostrar la representación y comunicación de una propuesta arquitectónica.",
+    image: images.arquitectura,
+    service: "Arquitectura",
+  },
+];
+
+/* =========================================================
+   PROCESO
+   ========================================================= */
 
 type ProcessStep = {
   icon: LucideIcon;
   title: string;
-  text: string;
+  description: string;
 };
 
 const process: ProcessStep[] = [
   {
     icon: ClipboardList,
-    title: "Revisamos tu proyecto",
-    text: "Nos ponemos en contacto con usted para revisar detalles con el equipo de trabajo y organizamos una cotizacion",
+    title: "Revisamos tu necesidad",
+    description:
+      "Nos compartes la ubicación, el objetivo y la información disponible de tu proyecto.",
   },
   {
     icon: Layers3,
-    title: "Elaboramos en una estrategia de trabajo",
-    text: "Capturamos y recibimos toda la inforación para proceder.",
+    title: "Definimos el alcance",
+    description:
+      "Acordamos el servicio, los entregables y la información necesaria para preparar la cotización.",
   },
   {
     icon: Cuboid,
-    title: "Nos enfocamos en el proyecto",
-    text: "Ejecutamos el servicio contratado con el máximo detalle posible.",
+    title: "Desarrollamos el trabajo",
+    description:
+      "Ejecutamos el levantamiento, diseño o modelado según el alcance contratado.",
   },
   {
     icon: CheckCircle2,
-    title: "Entregamos archivos listos para uso",
-    text: "Entregables precisos para obra, operación o documentación final.",
+    title: "Entregamos y revisamos",
+    description:
+      "Compartimos los archivos acordados y revisamos contigo los resultados del servicio.",
   },
 ];
+
+/* =========================================================
+   PREGUNTAS FRECUENTES
+   ========================================================= */
+
+const faqs = [
+  {
+    question: "¿Qué necesito enviar para solicitar una cotización?",
+    answer:
+      "Comparte la ubicación, el tipo de inmueble, una superficie aproximada si la conoces y una descripción de lo que necesitas. Si tienes planos o fotografías, podemos coordinar su envío por correo o WhatsApp.",
+  },
+  {
+    question: "¿Puedo contactarlos si no sé qué servicio necesito?",
+    answer:
+      "Sí. Cuéntanos el objetivo de tu proyecto y la información que tienes disponible para revisar qué servicio puede ajustarse a tu necesidad.",
+  },
+  {
+    question: "¿En qué formatos se entregan los archivos?",
+    answer:
+      "Los formatos se definen durante la cotización de acuerdo con el servicio, el alcance y las herramientas que utiliza tu equipo.",
+  },
+  {
+    question: "¿Atienden proyectos fuera de Hermosillo?",
+    answer:
+      "Puedes consultarnos por proyectos en México. La disponibilidad, los traslados y las necesidades de trabajo en sitio se revisan para cada ubicación.",
+  },
+];
+
+/* =========================================================
+   COMPONENTES REUTILIZABLES
+   ========================================================= */
 
 type SectionTitleProps = {
   eyebrow?: string;
@@ -262,31 +323,48 @@ type SectionTitleProps = {
   description?: string;
 };
 
-function SectionTitle({ eyebrow, title, description }: SectionTitleProps) {
+function SectionTitle({
+  eyebrow,
+  title,
+  description,
+}: SectionTitleProps) {
   return (
     <div className="mx-auto mb-12 max-w-3xl text-center">
-      {eyebrow ? (
-        <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[#b5121b]">
+      {eyebrow && (
+        <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#FB7185]">
           {eyebrow}
         </p>
-      ) : null}
+      )}
 
-      <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
+      <h2 className="text-3xl font-bold leading-tight tracking-tight text-[#F4F4F5] md:text-4xl">
         {title}
       </h2>
 
-      {description ? (
-        <p className="mt-4 text-base leading-7 text-zinc-300 md:text-lg">
+      {description && (
+        <p className="mt-4 text-base leading-7 text-[#C4C4CC] md:text-lg">
           {description}
         </p>
-      ) : null}
-
-      <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-white" />
+      )}
     </div>
   );
 }
 
+const PRIMARY_BUTTON_CLASS =
+  "inline-flex items-center justify-center gap-2 rounded-xl bg-[#b5121b] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#940f17] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FB7185]";
+
+const SECONDARY_BUTTON_CLASS =
+  "inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-[#1C1C20] px-6 py-3.5 text-sm font-bold text-[#F4F4F5] transition hover:border-white/40 hover:bg-[#252529] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FB7185]";
+
+const INPUT_CLASS =
+  "w-full rounded-xl border border-white/20 bg-[#0B0B0D] px-4 py-3 text-[#F4F4F5] outline-none transition placeholder:text-zinc-500 focus:border-[#FB7185] focus:ring-2 focus:ring-[#FB7185]/20";
+
+/* =========================================================
+   PÁGINA
+   ========================================================= */
+
 export default function AsBuiltHomepageRedesign() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -297,21 +375,16 @@ export default function AsBuiltHomepageRedesign() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
-  const [statusType, setStatusType] = useState<"success" | "error">("success");
 
-  useEffect(() => {
-    const lastSubmit = localStorage.getItem("asbuilt_form_submitted");
-    const today = new Date().toDateString();
-
-    if (lastSubmit === today) {
-      setAlreadySubmitted(true);
-    }
-  }, []);
+  const [statusType, setStatusType] = useState<
+    "success" | "error"
+  >("success");
 
   const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = event.target;
 
@@ -321,18 +394,22 @@ export default function AsBuiltHomepageRedesign() {
     }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const selectService = (serviceTitle: string) => {
+    setFormData((current) => ({
+      ...current,
+      projectType: serviceTitle,
+    }));
+
+    setStatusMessage("");
+    setMenuOpen(false);
+  };
+
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
-    const today = new Date().toDateString();
-    const lastSubmit = localStorage.getItem("asbuilt_form_submitted");
-
-    if (lastSubmit === today) {
-      setAlreadySubmitted(true);
-      setStatusType("error");
-      setStatusMessage("Ya enviaste un mensaje hoy. Por favor espera hasta mañana.");
-      return;
-    }
+    if (isSubmitting) return;
 
     setIsSubmitting(true);
     setStatusMessage("");
@@ -349,13 +426,16 @@ export default function AsBuiltHomepageRedesign() {
       const result = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(result?.error || "Error sending message");
+        throw new Error(
+          result?.error || "No se pudo enviar el mensaje."
+        );
       }
 
-      localStorage.setItem("asbuilt_form_submitted", today);
-      setAlreadySubmitted(true);
       setStatusType("success");
-      setStatusMessage("¡Gracias! Nos pondremos en contacto pronto.");
+      setStatusMessage(
+        "¡Gracias! Recibimos tu consulta. Nos pondremos en contacto contigo para revisar los siguientes pasos."
+      );
+
       setFormData({
         name: "",
         email: "",
@@ -364,252 +444,455 @@ export default function AsBuiltHomepageRedesign() {
         projectType: "",
         message: "",
       });
-    } catch (error) {
+    } catch {
       setStatusType("error");
-      setStatusMessage("Hubo un error al enviar el mensaje. Intenta de nuevo.");
+      setStatusMessage(
+        "No pudimos enviar el mensaje. Intenta nuevamente o contáctanos por WhatsApp."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const navigation = [
+    { label: "Muestras", href: "#muestras" },
+    { label: "Servicios", href: "#servicios" },
+    { label: "Proceso", href: "#proceso" },
+    { label: "Contacto", href: "#contacto" },
+  ];
+
   return (
-    <main className="min-h-screen scroll-smooth bg-zinc-900 text-white">
+    <main
+      id="inicio"
+      className="min-h-screen bg-[#0B0B0D] text-[#F4F4F5]"
+    >
       <style>{`
         html {
           scroll-behavior: smooth;
         }
 
-        .clickable-motion {
-          transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease, border-color 220ms ease;
+        section[id] {
+          scroll-margin-top: 110px;
         }
 
-        .clickable-motion:hover {
-          transform: translateY(-3px) scale(1.015);
+        input,
+        textarea,
+        select {
+          color-scheme: dark;
         }
 
-        .clickable-motion:active {
-          transform: translateY(0) scale(0.97);
-        }
-
-        @keyframes revealUp {
-          from {
-            opacity: 0;
-            transform: translateY(34px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @supports (animation-timeline: view()) {
-          .scroll-reveal {
-            opacity: 0;
-            animation: revealUp 0.75s ease-out forwards;
-            animation-timeline: view();
-            animation-range: entry 8% cover 28%;
-          }
+        ::selection {
+          background: #b5121b;
+          color: #ffffff;
         }
 
         @media (prefers-reduced-motion: reduce) {
           html {
             scroll-behavior: auto;
           }
-
-          .clickable-motion,
-          .clickable-motion:hover,
-          .clickable-motion:active,
-          .scroll-reveal {
-            transform: none;
-            animation: none;
-            opacity: 1;
-          }
         }
       `}</style>
 
-      <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 text-black shadow-sm backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8 text-base">
-          <a href="#" className="flex items-center gap-3">
+      {/* ENLACE PARA NAVEGACIÓN CON TECLADO */}
+
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#1C1C20] focus:p-4 focus:text-white"
+      >
+        Saltar al contenido
+      </a>
+
+      {/* HEADER */}
+
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#141416]/95 backdrop-blur-lg">
+        <nav
+          aria-label="Navegación principal"
+          className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8"
+        >
+          <a
+            href="#inicio"
+            aria-label="As-Built: inicio"
+            onClick={() => setMenuOpen(false)}
+          >
             <img
-              src={images.logo}
+              src={images.logo2}
               alt="As-Built"
-              className="h-16 w-auto rounded-md object-contain"
+              className="h-12 w-auto object-contain md:h-14"
             />
           </a>
 
-          <div className="hidden items-center gap-9 text-2xl font-black text-black/85 md:flex">
-            <a href="#servicios" className="transition hover:text-[#b5121b]">
-              Servicios
-            </a>
-            <a href="#proceso" className="transition hover:text-[#b5121b]">
-              Proceso
-            </a>
-            <a href="#contacto" className="transition hover:text-[#b5121b]">
-              Contacto
-            </a>
+          <div className="hidden items-center gap-7 lg:flex">
+            {navigation.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-semibold text-[#C4C4CC] transition hover:text-[#FDA4AF]"
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
 
           <a
             href="#contacto"
-            className="clickable-motion hidden rounded-xl border border-black bg-black px-14 py-5 text-base font-black text-white shadow-lg shadow-black/15 hover:bg-[#b5121b] md:inline-flex"
+            className={`${PRIMARY_BUTTON_CLASS} hidden lg:inline-flex`}
           >
-            Cotizar
+            Cotizar proyecto
+            <ArrowRight
+              className="h-4 w-4"
+              aria-hidden="true"
+            />
           </a>
 
           <button
-            className="rounded-xl border border-black/15 p-2 text-black md:hidden"
-            aria-label="Abrir menú"
+            type="button"
+            onClick={() => setMenuOpen((current) => !current)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            className="rounded-lg border border-white/20 bg-[#1C1C20] p-2.5 text-white transition hover:bg-[#252529] lg:hidden"
           >
-            <Menu className="h-5 w-5" />
+            {menuOpen ? (
+              <X
+                className="h-6 w-6"
+                aria-hidden="true"
+              />
+            ) : (
+              <Menu
+                className="h-6 w-6"
+                aria-hidden="true"
+              />
+            )}
           </button>
         </nav>
-      </header>
 
-      <section className="relative min-h-[calc(100svh-104px)] overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_32%,rgba(255,255,255,0.8),transparent_34%),radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.72),transparent_28%),linear-gradient(135deg,#ffffff_0%,#f4f4f4_48%,#dedede_100%)]" />
+        {menuOpen && (
+          <div
+            id="mobile-navigation"
+            className="border-t border-white/10 bg-[#141416] px-6 py-5 lg:hidden"
+          >
+            <div className="mx-auto flex max-w-7xl flex-col gap-2">
+              {navigation.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-lg px-3 py-3 font-semibold text-[#D4D4D8] transition hover:bg-[#252529] hover:text-white"
+                >
+                  {item.label}
+                </a>
+              ))}
 
-        <div className="pointer-events-none absolute inset-0 opacity-[0.08]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0.85)_1px,transparent_1.2px)] [background-size:22px_22px]" />
-        </div>
-
-        <div className="pointer-events-none absolute right-[-8%] top-1/2 hidden h-[78%] w-[58%] -translate-y-1/2 opacity-[0.18] lg:block">
-          <div className="absolute inset-0 rounded-[50%] bg-[radial-gradient(circle,rgba(0,0,0,0.92)_1.15px,transparent_1.35px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_0%,black_48%,transparent_76%)]" />
-        </div>
-
-        <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-end overflow-hidden">
-          <img
-            src={images.heroBlueprint}
-            alt="Modelo arquitectónico As-Built en líneas técnicas"
-            className="h-full w-full object-contain object-right drop-shadow-[0_28px_34px_rgba(0,0,0,0.16)]"
-          />
-        </div>
-
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-104px)] max-w-[1680px] items-start px-6 py-20 lg:px-10 xl:px-14 2xl:px-16">
-          <div className="max-w-[760px]">
-            <p className="mb-5 text-sm font-black uppercase tracking-[0.28em] text-[#b5121b]">
-              BIM · As-Built · Documentación técnica
-            </p>
-
-            <h1 className="font-black leading-[0.98] tracking-[-0.055em] text-black text-[clamp(2.45rem,4.7vw,5.1rem)]">
-              Modelos{" "}
-              <span className="text-[#b5121b]">
-                As-Built
-              </span>{" "}
-              precisos para arquitectura, ingeniería y construcción
-            </h1>
-
-            <div className={HERO_PARAGRAPH_OFFSET_CLASS}>
-              <p className="mt-9 max-w-3xl text-xl font-semibold leading-9 text-zinc-700 lg:text-2xl">
-                Transformamos levantamientos, nubes de puntos y documentación existente en modelos BIM y entregables técnicos listos para coordinación, obra y toma de decisiones.
-              </p>
-            </div>
-
-            <div className={`mt-11 flex flex-col gap-4 sm:flex-row ${HERO_BUTTONS_OFFSET_CLASS}`}>
               <a
                 href="#contacto"
-                className="clickable-motion inline-flex items-end justify-center rounded-xl bg-black px-9 py-4 text-center text-xl font-black text-white shadow-xl shadow-black/25 hover:bg-zinc-800"
+                onClick={() => setMenuOpen(false)}
+                className={`${PRIMARY_BUTTON_CLASS} mt-3`}
+              >
+                Cotizar proyecto
+              </a>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* HERO */}
+
+      <section
+        id="contenido"
+        className="relative overflow-hidden border-b border-white/10 bg-[#0B0B0D]"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(181,18,27,0.10),transparent_55%)]"
+        />
+
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
+          <div>
+            <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#FB7185]">
+              Arquitectura · BIM · Documentación As-Built
+            </p>
+
+            <h1 className="max-w-3xl text-[clamp(2.5rem,4.5vw,4.5rem)] font-bold leading-[1.08] tracking-tight text-[#F4F4F5]">
+              Del inmueble existente a{" "}
+              <span className="text-[#FB7185]">
+                modelos y planos
+              </span>{" "}
+              para tu proyecto.
+            </h1>
+
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#C4C4CC]">
+              Levantamiento 3D, modelado BIM y documentación
+              técnica para despachos de arquitectura,
+              constructoras y propietarios.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#contacto"
+                className={PRIMARY_BUTTON_CLASS}
               >
                 Solicitar cotización
+                <ArrowRight
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
               </a>
+            </div>
 
-              <a
-                href="#servicios"
-                className="clickable-motion inline-flex items-end justify-center gap-8 rounded-xl border border-black/70 bg-white/50 px-9 py-4 text-center text-xl font-black text-black backdrop-blur hover:border-black hover:bg-white"
-              >
-                Ver servicios
-                <ArrowRight className="h-6 w-6" />
-              </a>
+            <div className="mt-8 flex items-start gap-2 text-sm text-[#C4C4CC]">
+              <MapPin
+                className="mt-0.5 h-4 w-4 shrink-0 text-[#FB7185]"
+                aria-hidden="true"
+              />
+              <span>
+                Desde Hermosillo, Sonora. Consulta cobertura
+                para tu proyecto en México.
+              </span>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#1C1C20]">
+              <img
+                src={images.heroBlueprint}
+                alt="Representación técnica de un modelo arquitectónico"
+                className="h-[300px] w-full object-contain p-6 sm:h-[420px] lg:h-[500px]"
+              />
+            </div>
+
+            <div className="mt-4 flex items-start gap-3 rounded-xl border border-white/10 bg-[#141416] p-4">
+              <FileText
+                className="mt-0.5 h-5 w-5 shrink-0 text-[#FB7185]"
+                aria-hidden="true"
+              />
+              <p className="text-sm leading-6 text-[#C4C4CC]">
+                El alcance, los formatos y los entregables
+                se definen de acuerdo con las necesidades
+                de tu equipo.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-y bg-black">
-        <div className="mx-auto grid max-w-7xl gap-5 px-6 py-7 md:grid-cols-4 lg:px-8">
+      {/* PROPUESTA DE TRABAJO */}
+
+      <section className="border-b border-white/10 bg-[#141416]">
+        <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 md:grid-cols-3 lg:px-8">
           {[
-            { icon: CheckCircle2, label: "Precisión técnica" },
-            { icon: Cuboid, label: "Flujo BIM profesional" },
-            { icon: Clock3, label: "Respuesta en 24h" },
-            { icon: MapPin, label: "Cobertura en México" },
-          ].map(({ icon: Icon, label }) => (
+            {
+              icon: ClipboardList,
+              title: "Alcance definido",
+              text: "Acordamos qué necesita tu proyecto.",
+            },
+            {
+              icon: Layers3,
+              title: "Información organizada",
+              text: "Modelos y documentación según el servicio.",
+            },
+            {
+              icon: MessageCircle,
+              title: "Contacto directo",
+              text: "Consulta por formulario, correo o WhatsApp.",
+            },
+          ].map(({ icon: Icon, title, text }) => (
             <div
-              key={label}
-              className="flex items-center gap-3 border-white/10 md:border-r md:last:border-r-0"
+              key={title}
+              className="flex items-start gap-4"
             >
-              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white">
-                <Icon className="h-5 w-5" />
+              <div className="rounded-xl border border-white/10 bg-[#1C1C20] p-3">
+                <Icon
+                  className="h-5 w-5 text-[#FB7185]"
+                  aria-hidden="true"
+                />
               </div>
-              <p className="font-bold text-white">{label}</p>
+
+              <div>
+                <h2 className="font-bold text-[#F4F4F5]">
+                  {title}
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-[#C4C4CC]">
+                  {text}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
+      {/* MUESTRAS VISUALES */}
+
+      
+
+      {/* SERVICIO DESTACADO */}
+
+      <section
+        id="levantamiento"
+        className="border-y border-white/10 bg-[#101012] px-6 py-20 lg:px-8"
+      >
+        <div
+          className={`mx-auto grid ${FEATURED_SECTION_WIDTH_CLASS} items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]`}
+        >
+          <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#1C1C20]">
+            <img
+              src={featuredService.image}
+              alt="Visualización de una nube de puntos de un inmueble"
+              loading="lazy"
+              className={`${FEATURED_IMAGE_HEIGHT_CLASS} w-full object-cover`}
+            />
+          </div>
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FB7185]">
+              Servicio destacado
+            </p>
+
+            <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-[#F4F4F5] md:text-4xl">
+              {featuredService.title}
+            </h2>
+
+            <p className="mt-5 text-lg leading-8 text-[#C4C4CC]">
+              {featuredService.description}
+            </p>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-[#1C1C20] p-5">
+              <p className="text-sm font-bold text-[#F4F4F5]">
+                ¿Para qué puede servirte?
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[#C4C4CC]">
+                {featuredService.idealFor}
+              </p>
+            </div>
+
+            <ul className="mt-6 space-y-3">
+              {featuredService.bullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-start gap-3 text-sm text-[#D4D4D8]"
+                >
+                  <CheckCircle2
+                    className="h-5 w-5 shrink-0 text-[#FB7185]"
+                    aria-hidden="true"
+                  />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="#contacto"
+              onClick={() =>
+                selectService(featuredService.title)
+              }
+              className={`${PRIMARY_BUTTON_CLASS} mt-8`}
+            >
+              Cotizar levantamiento
+              <ArrowRight
+                className="h-4 w-4"
+                aria-hidden="true"
+              />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* CATÁLOGO DE SERVICIOS */}
+
       <section
         id="servicios"
-        className="py-20 lg:px-8 scroll-reveal px-6"
+        className="bg-[#0B0B0D] px-6 py-20 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <SectionTitle
             eyebrow="Servicios"
-            title="Del diseño conceptual a la documentación técnica final"
-            description="Desarrollamos soluciones de diseño, modelado BIM, coordinación de ingeniería y documentación As-Built para convertir cada etapa del proyecto en información clara, precisa y útil para tomar decisiones."
+            title="Apoyo técnico para cada etapa del proyecto"
+            description="Selecciona el servicio que necesitas o cuéntanos tu objetivo para revisar juntos el alcance."
           />
 
-          <div className="space-y-16">
+          <div className="space-y-14">
             {serviceGroups.map((group) => (
-              <section
-                key={group.category}
-                className="border border-white/10 bg-white/[0.04] p-6 text-center shadow-2xl shadow-black/20 md:p-8 backdrop-blur rounded-[2rem]"
-              >
-                <div className="mx-auto mb-10 max-w-3xl text-center">
-                  <p className="text-sm font-black uppercase tracking-[0.22em] text-[#b5121b]">
+              <section key={group.category}>
+                <div className="mb-7 border-b border-white/10 pb-5">
+                  <h3 className="text-2xl font-bold text-[#F4F4F5]">
                     {group.category}
-                  </p>
-                  <p className="mt-3 text-base leading-7 text-zinc-300">
+                  </h3>
+
+                  <p className="mt-2 max-w-3xl leading-7 text-[#C4C4CC]">
                     {group.description}
                   </p>
                 </div>
 
-                <div className={`mx-auto flex ${SERVICE_CARD_GRID_WIDTH_CLASS} flex-wrap justify-center gap-8`}>
+                <div className="flex flex-wrap justify-center gap-6">
                   {group.services.map((service) => (
-                    <div
+                    <article
                       key={service.title}
-                      className={`scroll-reveal flex ${SERVICE_CARD_WIDTH_CLASS} flex-col items-center`}
+                      className={`flex ${
+                        service.cardWidthClass ??
+                        SERVICE_CARD_WIDTH_CLASS
+                      } flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#141416] transition-colors duration-200 hover:border-white/25`}
                     >
-                      <article
-                        className={`group relative ${SERVICE_CARD_HEIGHT_CLASS} w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/30 transition duration-300 hover:-translate-y-1 hover:border-white/35 hover:shadow-white/10`}
-                      >
-                        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                          <img
-                            src={service.image}
-                            alt=""
-                            className="h-full w-full object-cover opacity-[0.86] grayscale transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-                          />
-                        </div>
+                      <img
+                        src={service.image}
+                        alt={`Referencia visual de ${service.title}`}
+                        loading="lazy"
+                        className={`${
+                          service.cardHeightClass ??
+                          SERVICE_CARD_HEIGHT_CLASS
+                        } w-full object-cover`}
+                      />
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-75" />
+                      <div className="flex flex-1 flex-col p-6">
+                        <h4 className="text-xl font-bold text-[#F4F4F5]">
+                          {service.title}
+                        </h4>
 
-                        <div className="absolute inset-x-5 bottom-5 z-10 translate-y-3 rounded-2xl border border-white/10 bg-black/92 p-4 text-left opacity-0 shadow-xl shadow-black/30 backdrop-blur-md transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                          <p className="text-sm font-medium leading-6 text-zinc-200">
-                            {service.description}
+                        <p className="mt-3 text-sm leading-6 text-[#C4C4CC]">
+                          {service.description}
+                        </p>
+
+                        <div className="mt-4">
+                          <p className="text-xs font-bold uppercase tracking-wider text-[#A1A1AA]">
+                            Ideal para
+                          </p>
+
+                          <p className="mt-1 text-sm leading-6 text-[#D4D4D8]">
+                            {service.idealFor}
                           </p>
                         </div>
-                      </article>
 
-                      <h3 className="mt-5 max-w-[320px] text-center text-xl font-black leading-tight text-white">
-                        {service.title}
-                      </h3>
+                        <ul className="mt-5 space-y-2">
+                          {service.bullets.map((bullet) => (
+                            <li
+                              key={bullet}
+                              className="flex items-start gap-2 text-sm leading-6 text-[#C4C4CC]"
+                            >
+                              <CheckCircle2
+                                className="mt-1 h-4 w-4 shrink-0 text-[#FB7185]"
+                                aria-hidden="true"
+                              />
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
 
-                      <ul className="mt-4 space-y-2 text-center text-sm font-semibold text-zinc-300">
-                        {service.bullets.map((bullet) => (
-                          <li key={bullet} className="flex items-center justify-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-[#b5121b]" />
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                        <div className="mt-auto pt-6">
+                          <a
+                            href="#contacto"
+                            onClick={() =>
+                              selectService(service.title)
+                            }
+                            aria-label={`Consultar el servicio de ${service.title}`}
+                            className="inline-flex items-center gap-2 text-sm font-bold text-[#FB7185] transition hover:text-[#FDA4AF] hover:underline"
+                          >
+                            Consultar este servicio
+                            <ArrowRight
+                              className="h-4 w-4"
+                              aria-hidden="true"
+                            />
+                          </a>
+                        </div>
+                      </div>
+                    </article>
                   ))}
                 </div>
               </section>
@@ -618,9 +901,27 @@ export default function AsBuiltHomepageRedesign() {
         </div>
       </section>
 
-      <section id="proceso" className="scroll-reveal bg-black px-6 py-20 lg:px-8">
+      {/* PROCESO */}
+
+      <section
+        id="proceso"
+        className="border-y border-white/10 bg-[#101012] px-6 py-20 text-white lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
-          <SectionTitle eyebrow="Proceso" title="Nuestro proceso" />
+          <div className="mx-auto mb-12 max-w-3xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FB7185]">
+              Proceso
+            </p>
+
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#F4F4F5] md:text-4xl">
+              Desde la primera consulta hasta la entrega
+            </h2>
+
+            <p className="mt-4 leading-7 text-[#C4C4CC]">
+              Un alcance claro permite organizar el trabajo
+              y definir qué información recibirá tu equipo.
+            </p>
+          </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map((step, index) => {
@@ -629,222 +930,399 @@ export default function AsBuiltHomepageRedesign() {
               return (
                 <article
                   key={step.title}
-                  className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-lg shadow-black/20 transition hover:border-white/30"
+                  className="rounded-2xl border border-white/10 bg-[#1C1C20] p-6 transition-colors hover:border-white/25"
                 >
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="grid h-14 w-14 place-items-center rounded-2xl border border-white/15 bg-white/10 text-white">
-                      <Icon className="h-7 w-7" />
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="rounded-xl border border-white/10 bg-[#141416] p-3">
+                      <Icon
+                        className="h-6 w-6 text-[#FB7185]"
+                        aria-hidden="true"
+                      />
                     </div>
-                    <span className="text-4xl font-black text-white/10">0{index + 1}</span>
+
+                    <span className="text-sm font-bold text-[#A1A1AA]">
+                      0{index + 1}
+                    </span>
                   </div>
-                  <h3 className="text-lg font-black text-white">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-zinc-300">{step.text}</p>
+
+                  <h3 className="text-lg font-bold text-[#F4F4F5]">
+                    {step.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-[#C4C4CC]">
+                    {step.description}
+                  </p>
                 </article>
               );
             })}
           </div>
+
+          <div className="mt-10 text-center">
+            <a
+              href="#contacto"
+              className={PRIMARY_BUTTON_CLASS}
+            >
+              Cuéntanos sobre tu proyecto
+              <ArrowRight
+                className="h-4 w-4"
+                aria-hidden="true"
+              />
+            </a>
+          </div>
         </div>
       </section>
 
-      <section id="contacto" className="scroll-reveal bg-[linear-gradient(180deg,#000000_0%,#111111_100%)] px-6 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/30 backdrop-blur lg:grid-cols-[1.1fr_0.9fr]">
+      {/* PREGUNTAS FRECUENTES */}
+
+      <section className="bg-[#0B0B0D] px-6 py-20 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <SectionTitle
+            eyebrow="Preguntas frecuentes"
+            title="Antes de comenzar"
+          />
+
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="rounded-2xl border border-white/10 bg-[#141416] p-5 transition-colors open:border-white/25"
+              >
+                <summary className="cursor-pointer font-bold leading-6 text-[#F4F4F5]">
+                  {faq.question}
+                </summary>
+
+                <p className="mt-4 text-sm leading-7 text-[#C4C4CC]">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACTO */}
+
+      <section
+        id="contacto"
+        className="bg-[#0B0B0D] px-6 py-20 lg:px-8"
+      >
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-3xl border border-white/10 bg-[#141416] lg:grid-cols-[1.15fr_0.85fr]">
           <div className="p-6 md:p-10">
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#b5121b]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FB7185]">
               Contacto
             </p>
 
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-4xl">
-              Comencemos tu proyecto
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#F4F4F5] md:text-4xl">
+              Cuéntanos qué necesita tu proyecto
             </h2>
 
-            <p className="mt-4 max-w-2xl text-zinc-300">
-              Envíanos planos, ubicación o una breve descripción del alcance. Te responderemos con los siguientes pasos. También puedes contactarnos directamente a los teléfonos {" "}
-              <a
-                href="https://wa.me/+526623748782"
-                className="font-black text-white underline decoration-[#ffffff] decoration-2 underline-offset-4 transition hover:text-zinc-300"
-              >
-                (662) 374 8782.
-              </a>
+            <p className="mt-4 leading-7 text-[#C4C4CC]">
+              Comparte una breve descripción y te indicaremos
+              la información necesaria para preparar una
+              cotización.
             </p>
-              <a
-                href="https://wa.me/+526623673378"
-                className="font-black text-white underline decoration-[#ffffff] decoration-2 underline-offset-4 transition hover:text-zinc-300"
+
+            <p className="mt-3 text-sm text-[#A1A1AA]">
+              Los campos marcados con * son obligatorios.
+            </p>
+
+            <form
+              onSubmit={handleSubmit}
+              aria-busy={isSubmitting}
+              className="mt-8"
+            >
+              <fieldset
+                disabled={isSubmitting}
+                className="grid gap-5 disabled:opacity-70"
               >
-                (662) 367 3378.
-              </a>
-            {alreadySubmitted ? (
-              <div className="mt-8 rounded-3xl border border-white/10 bg-white/10 p-8 text-center">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-white" />
-                <h3 className="mt-4 text-xl font-black text-white">¡Mensaje enviado!</h3>
-                <p className="mt-2 text-zinc-300">
-                  Ya enviaste un mensaje hoy. Te contactaremos pronto. Puedes volver a escribirnos mañana.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="mt-8 grid gap-4">
-                <div className="grid gap-4 md:grid-cols-2">
+                <legend className="sr-only">
+                  Datos de contacto y del proyecto
+                </legend>
+
+                <div>
+                  <label
+                    htmlFor="contact-name"
+                    className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
+                  >
+                    Nombre completo *
+                  </label>
+
                   <input
+                    id="contact-name"
                     name="name"
+                    type="text"
+                    autoComplete="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white focus:ring-4 focus:ring-white/10"
-                    placeholder="Nombre completo"
-                  />
-
-                  <input
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white focus:ring-4 focus:ring-white/10"
-                    placeholder="Correo electrónico"
-                  />
-
-                  <input
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white focus:ring-4 focus:ring-white/10"
-                    placeholder="Empresa"
-                  />
-
-                  <input
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white focus:ring-4 focus:ring-white/10"
-                    placeholder="Teléfono"
+                    maxLength={120}
+                    className={INPUT_CLASS}
+                    placeholder="Tu nombre"
                   />
                 </div>
 
-                <select
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleInputChange}
-                  required
-                  className="rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-zinc-300 outline-none transition focus:border-white focus:ring-4 focus:ring-white/10"
-                >
-                  <option value="">Tipo de proyecto</option>
-                  <option value="Diseño de Inmueble">Diseño de Inmueble</option>
-                  <option value="Levantamiento por nube de puntos">Diseño Arquitectónico</option>
-                  <option value="Documentación As-Built">Modelado BIM y 3D</option>
-                  <option value="Modelado BIM">Modelado de Disciplinas</option>
-                  <option value="Arquitectura">Levantamiento por nube de puntos</option>
-                  <option value="Diseño MEP ">Coordinación de Ingeniería</option>
-                  <option value="Topografía ">Documentación As-Built</option>
-                  <option value="Ortofotografía ">Otros</option>
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="contact-email"
+                      className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
+                    >
+                      Correo electrónico *
+                    </label>
 
-                </select>
+                    <input
+                      id="contact-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      maxLength={254}
+                      className={INPUT_CLASS}
+                      placeholder="nombre@empresa.com"
+                    />
+                  </div>
 
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  className="min-h-36 rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-white focus:ring-4 focus:ring-white/10"
-                  placeholder="Detalles del proyecto"
-                />
+                  <div>
+                    <label
+                      htmlFor="contact-phone"
+                      className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
+                    >
+                      Teléfono — opcional
+                    </label>
 
-                {statusMessage ? (
-                  <p
-                    className={`rounded-xl px-4 py-3 text-sm font-semibold ${
-                      statusType === "success"
-                        ? "bg-white/10 text-white"
-                        : "bg-[#b5121b]/15 text-red-200"
-                    }`}
+                    <input
+                      id="contact-phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      maxLength={30}
+                      className={INPUT_CLASS}
+                      placeholder="Tu número de contacto"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-service"
+                    className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
                   >
-                    {statusMessage}
+                    Servicio de interés *
+                  </label>
+
+                  <select
+                    id="contact-service"
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    required
+                    className={INPUT_CLASS}
+                  >
+                    <option value="">
+                      Selecciona un servicio
+                    </option>
+
+                    {projectTypes.map((type) => (
+                      <option
+                        key={type}
+                        value={type}
+                      >
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-message"
+                    className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
+                  >
+                    ¿Qué necesitas? *
+                  </label>
+
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    maxLength={5000}
+                    rows={5}
+                    aria-describedby="message-help"
+                    className={`${INPUT_CLASS} resize-y`}
+                    placeholder="Ubicación, tipo de inmueble y objetivo del proyecto..."
+                  />
+
+                  <p
+                    id="message-help"
+                    className="mt-2 text-xs leading-5 text-[#A1A1AA]"
+                  >
+                    Si tienes planos o fotografías, podemos
+                    coordinar su envío por correo o WhatsApp.
                   </p>
-                ) : null}
+                </div>
+
+                <details className="rounded-xl border border-white/10 bg-[#101012] p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-[#C4C4CC]">
+                    Agregar empresa — opcional
+                  </summary>
+
+                  <div className="mt-4">
+                    <label
+                      htmlFor="contact-company"
+                      className="mb-2 block text-sm font-semibold text-[#F4F4F5]"
+                    >
+                      Empresa
+                    </label>
+
+                    <input
+                      id="contact-company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      maxLength={160}
+                      className={INPUT_CLASS}
+                      placeholder="Nombre de tu empresa"
+                    />
+                  </div>
+                </details>
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="clickable-motion w-full rounded-xl bg-white px-7 py-4 font-black text-black shadow-lg shadow-black/25 hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-60 md:w-fit"
+                  className={`${PRIMARY_BUTTON_CLASS} w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-fit`}
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+                  {isSubmitting
+                    ? "Enviando consulta..."
+                    : "Enviar consulta"}
+
+                  {!isSubmitting && (
+                    <ArrowRight
+                      className="h-4 w-4"
+                      aria-hidden="true"
+                    />
+                  )}
                 </button>
-              </form>
-            )}
+              </fieldset>
+
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className={
+                  statusMessage
+                    ? `mt-5 rounded-xl border px-4 py-3 text-sm leading-6 ${
+                        statusType === "success"
+                          ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-200"
+                          : "border-red-400/25 bg-red-400/10 text-red-200"
+                      }`
+                    : "sr-only"
+                }
+              >
+                {statusMessage}
+              </div>
+            </form>
           </div>
 
-          <aside className="relative overflow-hidden border-l border-white/10 bg-black p-8 text-white md:p-10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.12),transparent_35%)]" />
+          <aside className="border-t border-white/10 bg-[#101012] p-6 md:p-10 lg:border-l lg:border-t-0">
+            <h3 className="text-2xl font-bold text-[#F4F4F5]">
+              También podemos hablar directamente
+            </h3>
 
-            <div className="relative flex h-full flex-col justify-center gap-8">
-              <div className="flex gap-4">
-                <Mail className="h-7 w-7 text-white" />
-                <div>
-                  <p className="font-black">info@asbuiltco.com</p>
-                  <p className="font-black">proyectos@asbuiltco.com</p>
-                  <p className="mt-1 text-sm text-zinc-300">Correos de contacto</p>
-                </div>
-              </div>
-              
-              
+            <p className="mt-4 leading-7 text-[#C4C4CC]">
+              Si prefieres explicar tu proyecto por mensaje,
+              escríbenos por WhatsApp o correo.
+            </p>
 
+            <a
+              href={CONTACT.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${PRIMARY_BUTTON_CLASS} mt-6 w-full`}
+            >
+              <MessageCircle
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
+              Contactar por WhatsApp
+            </a>
 
+            <div className="mt-10 space-y-8">
+              <div className="flex items-start gap-4">
+                <Mail
+                  className="mt-1 h-5 w-5 shrink-0 text-[#FB7185]"
+                  aria-hidden="true"
+                />
 
+                <div className="min-w-0">
+                  <p className="mb-2 text-sm font-bold text-[#F4F4F5]">
+                    Correos de contacto
+                  </p>
 
-
-              <div className="flex gap-4">
-                <Phone className="h-7 w-7 text-white" />
-                <div>
-                  <p className="font-black">(662) 374 8782</p>
-                  <p className="font-black">(662) 367 3378</p>
-                  <p className="mt-1 text-sm text-zinc-300">Teléfono</p>
-                </div>
-              </div>
-
-
-              <div className="relative flex gap-4">
-                <a href="https://wa.me/+526623748782">
-                  <img
-                    className="h-8 w-8 flex gap-4"
-                    src={images.whatsApp}
-                    alt="WhatsApp"
-                  />
-                </a>
-                <div>
-                  <p className="font-black">WhatsApp </p>
-                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Haz click para enviarnos un WhatsApp</a>
                   <a
-                  href="https://wa.me/+526623748782"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="Contactar por WhatsApp"
-                   className="absolute inset-0 z-10"
-                   />
+                    href={`mailto:${CONTACT.email}`}
+                    className="block break-words text-sm leading-7 text-[#C4C4CC] transition hover:text-[#FDA4AF] hover:underline"
+                  >
+                    {CONTACT.email}
+                  </a>
+
+                  <a
+                    href={`mailto:${CONTACT.projectsEmail}`}
+                    className="block break-words text-sm leading-7 text-[#C4C4CC] transition hover:text-[#FDA4AF] hover:underline"
+                  >
+                    {CONTACT.projectsEmail}
+                  </a>
                 </div>
               </div>
 
+              <div className="flex items-start gap-4">
+                <Phone
+                  className="mt-1 h-5 w-5 shrink-0 text-[#FB7185]"
+                  aria-hidden="true"
+                />
 
-
-{/*              <div className="flex gap-4">
-                <a href="https://wa.me/+526623748782">
-                  <img
-                    className="h-8 w-8 flex gap-4"
-                    src={images.whatsApp}
-                    alt="WhatsApp"
-                  />
-                </a>
                 <div>
-                  <a href="https://wa.me/+526623748782" className="font-black">WhatsApp </a>
-                  <p></p>
-                  <a href="https://wa.me/+526623748782" className="mt-1 text-sm text-zinc-300">Envíanos un WhatsApp</a>
+                  <p className="mb-2 text-sm font-bold text-[#F4F4F5]">
+                    Teléfonos
+                  </p>
+
+                  <a
+                    href={CONTACT.phoneHref}
+                    className="block text-sm leading-7 text-[#C4C4CC] transition hover:text-[#FDA4AF] hover:underline"
+                  >
+                    {CONTACT.phone}
+                  </a>
+
+                  <a
+                    href={CONTACT.secondPhoneHref}
+                    className="block text-sm leading-7 text-[#C4C4CC] transition hover:text-[#FDA4AF] hover:underline"
+                  >
+                    {CONTACT.secondPhone}
+                  </a>
                 </div>
-              </div>*/}
+              </div>
 
+              <div className="flex items-start gap-4">
+                <MapPin
+                  className="mt-1 h-5 w-5 shrink-0 text-[#FB7185]"
+                  aria-hidden="true"
+                />
 
-
-
-              <div className="flex gap-4">
-                <MapPin className="h-7 w-7 text-white" />
                 <div>
-                  <p className="font-black">Hermosillo, Sonora</p>
-                  <p className="mt-1 text-zinc-300">Cobertura para proyectos en todo México</p>
+                  <p className="text-sm font-bold text-[#F4F4F5]">
+                    {CONTACT.location}
+                  </p>
+
+                  <p className="mt-2 text-sm leading-6 text-[#C4C4CC]">
+                    Consulta disponibilidad para la ubicación
+                    de tu proyecto.
+                  </p>
                 </div>
               </div>
             </div>
@@ -852,57 +1330,88 @@ export default function AsBuiltHomepageRedesign() {
         </div>
       </section>
 
-      <footer className="bg-black px-6 py-12 text-white lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
+      {/* FOOTER */}
+
+      <footer className="border-t border-white/10 bg-[#08080A] px-6 py-12 text-white lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
             <img
               src={images.logo2}
               alt="As-Built"
-              className="h-16 w-auto rounded-md object-contain"
+              loading="lazy"
+              className="h-14 w-auto object-contain"
             />
 
-            <p className="mt-4 max-w-xs text-sm leading-6 text-zinc-400">
-              Modelos As-Built precisos para arquitectura, ingeniería y construcción.
+            <p className="mt-5 max-w-sm text-sm leading-7 text-[#C4C4CC]">
+              Arquitectura, levantamiento 3D, modelado BIM y
+              documentación técnica para tu proyecto.
             </p>
           </div>
 
-          {[
-            {
-              title: "Servicios",
-              links: [
-                "Diseño de Inmueble",
-                "Diseño Arquitectónico",
-                "Modelado BIM y 3D",
-                "Modelado de Disciplinas",
-                "Levantamiento 3D",
-                "Coordinación de Ingeniería",
-                "Documentación As-Built",
-              ],
-            },
-            {
-              title: "Nosotros",
-              links: ["Quiénes somos", "Nuestro enfoque", "Clientes"],
-            },
-            {
-              title: "Contacto",
-              links: ["info@asbuiltco.com", "+52 (662 374 8782", "Hermosillo, Sonora"],
-            },
-          ].map(({ title, links }) => (
-            <div key={title}>
-              <h3 className="font-black text-white">{title}</h3>
-              <ul className="mt-4 space-y-2 text-sm text-zinc-400">
-                {links.map((link) => (
-                  <li key={link}>{link}</li>
-                ))}
-              </ul>
+          <div>
+            <h2 className="font-bold text-[#F4F4F5]">
+              Explora
+            </h2>
+
+            <ul className="mt-4 space-y-3 text-sm text-[#C4C4CC]">
+              {navigation.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="transition hover:text-white hover:underline"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="font-bold text-[#F4F4F5]">
+              Contacto
+            </h2>
+
+            <div className="mt-4 space-y-3 text-sm text-[#C4C4CC]">
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="block transition hover:text-white hover:underline"
+              >
+                {CONTACT.email}
+              </a>
+
+              <a
+                href={CONTACT.phoneHref}
+                className="block transition hover:text-white hover:underline"
+              >
+                {CONTACT.phone}
+              </a>
+
+              <p>{CONTACT.location}</p>
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-center text-sm text-zinc-500">
-          © 2026 As-Built. Todos los derechos reservados.
+        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-sm text-[#A1A1AA]">
+          © {new Date().getFullYear()} As-Built. Todos los
+          derechos reservados.
         </div>
       </footer>
+
+      {/* WHATSAPP FLOTANTE */}
+
+      <a
+        href={CONTACT.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Abrir conversación con As-Built en WhatsApp"
+        className="fixed bottom-5 right-5 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-[#166534] text-white shadow-lg transition hover:bg-[#14532d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300 md:bottom-6 md:right-6"
+      >
+        <MessageCircle
+          className="h-7 w-7"
+          aria-hidden="true"
+        />
+      </a>
     </main>
   );
 }
