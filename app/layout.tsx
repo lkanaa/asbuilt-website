@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+import Script from 'next/script'; // <-- import Script component
 
 export const metadata: Metadata = {
   title: "As-Built",
@@ -15,6 +16,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
+         {process.env.NODE_ENV === 'development' && process.env.PINY_VISUAL_SELECT === 'true' && (
+         <Script
+            src="/_piny/piny.phone.js"
+            strategy="beforeInteractive" 
+         />)} { /* <-- conditionally include the Piny script */ }
         {children}
         <Toaster richColors position="top-right" />
       </body>

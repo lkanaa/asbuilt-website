@@ -1,0 +1,80 @@
+{
+    "piny.project_settings": {
+        "open-pages": [
+            "pinyfakepage.html"
+        ],
+        "tw-external-config": {
+            "external_source_url": "app/globals.css"
+        },
+        "source-folders": [
+            "components",
+            "app",
+            "lib",
+            "public"
+        ],
+        "preview-url": "http://localhost:3000",
+        "app-routes": {
+            "routes": [
+                "/",
+                "/#contacto",
+                "/#servicios"
+            ],
+            "current_route": "/#contacto"
+        },
+        "recent-classes": [
+            ":",
+            "3",
+            "m",
+            "u",
+            "z",
+            "9",
+            "x",
+            "p",
+            "v",
+            "o",
+            "s",
+            "7",
+            "6",
+            "4",
+            "y",
+            "h",
+            "k",
+            "c",
+            "]",
+            ")",
+            "2",
+            "5",
+            "%",
+            "_",
+            "#",
+            ",",
+            "0",
+            "8",
+            "1",
+            "(",
+            "t",
+            "d",
+            "r",
+            "a",
+            "e",
+            "n",
+            "i",
+            "l",
+            "[",
+            "-",
+            "g",
+            "b"
+        ],
+        "ai-project-brief": null,
+        "urls": {
+            "pinyfakepage.html": {
+                "open-page-views": [
+                    {
+                        "w": 1750,
+                        "h": 0
+                    }
+                ]
+            }
+        }
+    }
+}
